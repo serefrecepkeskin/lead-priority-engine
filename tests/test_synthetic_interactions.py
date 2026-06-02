@@ -60,10 +60,9 @@ def test_cramers_v_in_realistic_band(raw: pd.DataFrame) -> None:
 def test_every_class_has_both_outcomes(raw: pd.DataFrame) -> None:
     attitude = assign_attitudes(raw, seed=42)
     ctab = pd.crosstab(attitude, raw["Converted"])
-    assert (ctab > 0).all().all(), (
-        "Every attitude class must contain both converted and non-converted leads "
-        f"— got:\n{ctab}"
-    )
+    assert (
+        (ctab > 0).all().all()
+    ), f"Every attitude class must contain both converted and non-converted leads — got:\n{ctab}"
 
 
 def test_context_is_neutral_and_does_not_leak_converted(raw: pd.DataFrame) -> None:
