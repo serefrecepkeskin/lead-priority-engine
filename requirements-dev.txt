@@ -26,3 +26,9 @@ ipykernel~=6.29
 matplotlib~=3.9
 seaborn~=0.13
 openpyxl~=3.1
+
+# Offline data-generation pipeline (scripts/datagen/). Not needed at runtime —
+# the API never calls Azure OpenAI or rewrites the methodology docx.
+langchain-openai~=0.2
+python-docx~=1.1
+tqdm~=4.66

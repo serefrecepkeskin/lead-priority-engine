@@ -15,3 +15,7 @@ lightgbm~=4.5
 joblib~=1.4
 
 python-multipart~=0.0.12
+
+# Parquet I/O — small enough to keep in runtime so the API can load
+# pre-generated synthetic notes if needed for /leads/top demos.
+pyarrow~=18.0
