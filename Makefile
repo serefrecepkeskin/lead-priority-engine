@@ -22,14 +22,14 @@ install-dev: venv  ## Install dev deps + package + register pre-commit hooks
 	$(BIN)/pre-commit install
 
 lint:  ## Ruff lint check
-	$(BIN)/ruff check src tests
+	$(BIN)/ruff check src tests scripts
 
 format:  ## Ruff format + autofix
-	$(BIN)/ruff format src tests
-	$(BIN)/ruff check --fix src tests
+	$(BIN)/ruff format src tests scripts
+	$(BIN)/ruff check --fix src tests scripts
 
-typecheck:  ## mypy strict on src
-	$(BIN)/mypy src
+typecheck:  ## mypy strict on src + scripts/datagen
+	$(BIN)/mypy
 
 test:  ## Run tests
 	$(BIN)/pytest

@@ -218,6 +218,10 @@ __marimo__/
 .streamlit/secrets.toml
 
 *.docx
+# Methodology docs under docs/ are intentional deliverables — keep them tracked.
+!docs/*.docx
+# Word lock files (created when a doc is open) should never be tracked.
+~$*.docx
 
 # --- project-specific ---------------------------------------------------------
 
@@ -226,9 +230,10 @@ artifacts/*
 !artifacts/.gitkeep
 
 # Generated/processed data. Raw inputs under data/ stay tracked.
+# data/synthetic/ is tracked: it carries the LLM-generated interaction notes
+# used by the sentiment classifier and is part of the case-study deliverable.
 data/processed/
 data/interim/
-data/synthetic/
 
 # Notebook checkpoints (nbstripout handles staged content)
 notebooks/.ipynb_checkpoints/
@@ -251,3 +256,4 @@ Thumbs.db
 # Logs
 logs/
 *.log
+*docx.py

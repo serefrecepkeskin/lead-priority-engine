@@ -44,14 +44,21 @@ select = [
 ignore = [
     "PLR0913", # too many arguments (common in ML APIs)
     "PLR2004", # magic value comparisons (we'll handle case by case)
+    "RUF001",  # ambiguous Unicode chars: Turkish content is expected throughout
+    "RUF002",  # ambiguous Unicode in docstrings: same reason as RUF001
+    "RUF003",  # ambiguous Unicode in comments: same reason as RUF001
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
-"tests/*" = ["PLR2004", "S101", "ARG001"]
+"tests/*" = ["PLR2004", "S101", "ARG001", "PT018"]
+"scripts/*" = ["T201"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["lead_priority", "datagen"]
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -65,7 +72,8 @@ strict = true
 warn_unused_ignores = true
 warn_redundant_casts = true
 disallow_untyped_decorators = false
-files = ["src"]
+files = ["src", "scripts/datagen"]
+mypy_path = ["scripts"]
 
 [[tool.mypy.overrides]]
 module = [
