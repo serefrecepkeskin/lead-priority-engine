@@ -60,9 +60,9 @@ def test_cramers_v_in_realistic_band(raw: pd.DataFrame) -> None:
 def test_every_class_has_both_outcomes(raw: pd.DataFrame) -> None:
     attitude = assign_attitudes(raw, seed=42)
     ctab = pd.crosstab(attitude, raw["Converted"])
-    assert (
-        (ctab > 0).all().all()
-    ), f"Every attitude class must contain both converted and non-converted leads — got:\n{ctab}"
+    assert (ctab > 0).all().all(), (
+        f"Every attitude class must contain both converted and non-converted leads — got:\n{ctab}"
+    )
 
 
 def test_context_is_neutral_and_does_not_leak_converted(raw: pd.DataFrame) -> None:
@@ -105,6 +105,6 @@ def test_user_message_does_not_leak_label_columns() -> None:
     )
     user_msg = next(m["content"] for m in msgs if m["role"] == "user").lower()
     for forbidden in ["converted", "tags", "lead quality", "last notable activity"]:
-        assert (
-            forbidden not in user_msg
-        ), f"user prompt must not surface label-leaking field '{forbidden}'"
+        assert forbidden not in user_msg, (
+            f"user prompt must not surface label-leaking field '{forbidden}'"
+        )
