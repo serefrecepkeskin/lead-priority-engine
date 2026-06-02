@@ -40,9 +40,29 @@ Runtime config lives in `.env` (gitignored) and is loaded by `src/lead_priority/
 
 ## Documentation
 
-Detailed write-ups live under `docs/`. The README intentionally stays short —
-read the relevant doc for depth.
+Each phase ships its own write-up under `docs/` and (where applicable) an
+exploratory notebook under `notebooks/`. Files are numbered so the chronological
+order is visible at a glance. The README intentionally stays short — click into
+the relevant doc for depth.
 
-- **`docs/synthetic_data_and_leakage.docx`** — how the sentiment training notes were synthesized from the X Education tabular set, why this design avoids both label and temporal leakage (engagement-score derivation, prompt sandboxing, banned-phrase list), and the numerical validation: 5-fold AUC, Cramér's V, mutual information, crosstab, and a per-column AUC sweep that flags `Tags` / `Lead Quality` / `Last Notable Activity` as outcome-leaking columns to drop from lead scoring.
+| # | Phase | Write-up | Notebook |
+|---|---|---|---|
+| 0 | Synthetic interaction data + leakage diagnostics | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
+| 1 | EDA + feature engineering | _coming: `docs/1_eda_and_feature_engineering.docx`_ | _coming: `notebooks/1_eda_and_feature_engineering.ipynb`_ |
+| 2 | Lead scoring model (LR baseline + LGBM) | _coming: `docs/2_lead_scoring.docx`_ | _coming: `notebooks/2_lead_scoring.ipynb`_ |
+| 3 | Sentiment / intent classifier (XLM-R + LLM baseline) | _coming: `docs/3_sentiment_classifier.docx`_ | _coming: `notebooks/3_sentiment_classifier.ipynb`_ |
+| 4 | Combined priority score | _coming: `docs/4_priority_score.docx`_ | _(no notebook — small wiring step)_ |
 
-More docs will land here as each phase ships (scoring model card, sentiment classifier notes, API contract).
+**Doc format contract** (every numbered docx follows the same shape):
+
+- Clickable table of contents at the top
+- Third-person / passive Turkish — written for the reviewer to read, not the author
+- Technical concepts explained in plain language first, formal notation second
+- Section numbering `1. → 1.1 → 1.2 → 2.` etc.
+- Numerical results inside tables, not buried in prose
+
+**Notebook contract:**
+
+- Numbered prefix matches the corresponding docx
+- Markdown cells between code cells explain *what* the next block does and *why* — a reviewer should be able to read top-to-bottom without running it
+- First markdown cell links back to the phase docx (`docs/N_*.docx`)
