@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lead-priority-engine"
+version = "0.1.0"
+description = "Lead prioritization engine: tabular lead scoring + interaction sentiment + combined priority API"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Proprietary" }
+authors = [{ name = "Seref Recep Keskin", email = "serefrecepkeskin@gmail.com" }]
+# Runtime dependencies are tracked in requirements.txt (see README).
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# -----------------------------------------------------------------------------
+# Ruff: lint + format
+# -----------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+extend-exclude = ["notebooks", "data", "artifacts"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+    "N",   # pep8-naming
+    "C4",  # flake8-comprehensions
+    "PT",  # flake8-pytest-style
+    "PL",  # pylint subset
+    "ARG", # unused arguments
+    "PTH", # use pathlib
+]
+ignore = [
+    "PLR0913", # too many arguments (common in ML APIs)
+    "PLR2004", # magic value comparisons (we'll handle case by case)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["PLR2004", "S101", "ARG001"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# -----------------------------------------------------------------------------
+# Mypy: strict, with overrides for unstubbed ML libs and looser rules in tests
+# -----------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_decorators = false
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = [
+    "sklearn.*",
+    "lightgbm.*",
+    "xgboost.*",
+    "catboost.*",
+    "transformers.*",
+    "joblib.*",
+    "matplotlib.*",
+    "seaborn.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+# -----------------------------------------------------------------------------
+# Pytest
+# -----------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+    "unit: fast isolated unit tests",
+    "integration: tests touching real I/O or trained models",
+    "slow: tests that take longer than ~1s",
+]
+
+[tool.coverage.run]
+source = ["src/lead_priority"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
