@@ -35,13 +35,13 @@ jobs:
           pip install -e .
 
       - name: Ruff lint
-        run: ruff check src tests
+        run: ruff check src tests scripts
 
       - name: Ruff format check
-        run: ruff format --check src tests
+        run: ruff format --check src tests scripts
 
       - name: Mypy
-        run: mypy src
+        run: mypy
 
       - name: Pytest
         run: pytest

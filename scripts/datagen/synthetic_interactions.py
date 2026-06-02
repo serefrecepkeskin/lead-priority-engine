@@ -204,8 +204,7 @@ _ATTITUDE_TONE_HINTS: Mapping[AttitudeClass, str] = {
         "Lead ilgili, sorular soruyor, takip/demo istiyor. Sıcak ama gerçekçi."
     ),
     AttitudeClass.OBJECTION: (
-        "Lead itiraz/şüphe gösteriyor (fiyat, süre, içerik, zamanlama). "
-        "Diyalog açık ama temkinli."
+        "Lead itiraz/şüphe gösteriyor (fiyat, süre, içerik, zamanlama). Diyalog açık ama temkinli."
     ),
     AttitudeClass.DISENGAGED: (
         "Lead kısa, mesafeli, geri dönüş yapmıyor veya ilgilenmiyor gibi. "
