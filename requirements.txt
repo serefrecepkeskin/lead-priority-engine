@@ -1,0 +1,17 @@
+# Runtime dependencies.
+# Pinned with ~= for compatible-release semantics (PEP 440).
+# Heavier NLP stack (torch/transformers) is intentionally deferred to when the
+# sentiment work begins, to keep the API image small.
+
+fastapi~=0.115
+uvicorn[standard]~=0.32
+pydantic~=2.9
+pydantic-settings~=2.6
+
+pandas~=2.2
+numpy~=2.1
+scikit-learn~=1.5
+lightgbm~=4.5
+joblib~=1.4
+
+python-multipart~=0.0.12
