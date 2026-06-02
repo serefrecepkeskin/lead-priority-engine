@@ -37,8 +37,16 @@ class Settings(BaseSettings):
     lead_scoring_model: str = "lead_scoring_lgbm.joblib"
     sentiment_model: str = "sentiment_model"
 
-    openai_api_key: str | None = None
-    anthropic_api_key: str | None = None
+    # Azure OpenAI. All optional at load time so the package imports cleanly
+    # without a configured LLM; the caller is responsible for asserting the
+    # required values before issuing a request.
+    azure_openai_api_key: str | None = None
+    azure_openai_endpoint: str | None = None
+    azure_openai_deployment: str | None = None
+    azure_openai_api_version: str | None = None
+    azure_openai_max_tokens: int | None = None
+    azure_openai_timeout: float | None = None
+    azure_openai_reasoning_effort: str | None = None
 
     priority_weight_conversion: float = Field(default=0.6, ge=0.0, le=1.0)
     priority_weight_sentiment: float = Field(default=0.4, ge=0.0, le=1.0)
