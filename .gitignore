@@ -225,9 +225,15 @@ __marimo__/
 
 # --- project-specific ---------------------------------------------------------
 
-# Trained models / experiment artifacts
-artifacts/*
-!artifacts/.gitkeep
+# artifacts/ — lightweight reports (JSON, CSV) are tracked so reviewers can
+# inspect them without re-running the pipeline. Heavy trained-model blobs
+# (joblib / safetensors / pt / onnx / bin) stay out of git.
+artifacts/*.joblib
+artifacts/*.pkl
+artifacts/*.pt
+artifacts/*.bin
+artifacts/*.safetensors
+artifacts/*.onnx
 
 # Generated/processed data. Raw inputs under data/ stay tracked.
 # data/synthetic/ is tracked: it carries the LLM-generated interaction notes
@@ -241,6 +247,9 @@ notebooks/.ipynb_checkpoints/
 # Local secrets / overrides
 .env.local
 secrets/
+
+# Local working notes / handoff drafts — not part of the deliverable.
+notes/
 
 # OS junk
 .DS_Store
