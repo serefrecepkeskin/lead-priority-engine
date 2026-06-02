@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "seed": 42,
+  "n_rows_fit": 9240,
+  "n_features": 104,
+  "features": [
+    {
+      "name": "TotalVisits",
+      "source_column": "TotalVisits",
+      "kind": "numeric_clipped"
+    },
+    {
+      "name": "Total Time Spent on Website",
+      "source_column": "Total Time Spent on Website",
+      "kind": "numeric_clipped"
+    },
+    {
+      "name": "Page Views Per Visit",
+      "source_column": "Page Views Per Visit",
+      "kind": "numeric_clipped"
+    },
+    {
+      "name": "Asymmetrique Activity Score",
+      "source_column": "Asymmetrique Activity Score",
+      "kind": "numeric_clipped"
+    },
+    {
+      "name": "Asymmetrique Profile Score",
+      "source_column": "Asymmetrique Profile Score",
+      "kind": "numeric_clipped"
+    },
+    {
+      "name": "missingindicator_TotalVisits",
+      "source_column": "TotalVisits",
+      "kind": "missing_indicator"
+    },
+    {
+      "name": "missingindicator_Page Views Per Visit",
+      "source_column": "Page Views Per Visit",
+      "kind": "missing_indicator"
+    },
+    {
+      "name": "missingindicator_Asymmetrique Activity Score",
+      "source_column": "Asymmetrique Activity Score",
+      "kind": "missing_indicator"
+    },
+    {
+      "name": "missingindicator_Asymmetrique Profile Score",
+      "source_column": "Asymmetrique Profile Score",
+      "kind": "missing_indicator"
+    },
+    {
+      "name": "total_time_per_visit",
+      "source_column": "derived",
+      "kind": "numeric_ratio"
+    },
+    {
+      "name": "channel_diversity_count",
+      "source_column": "derived",
+      "kind": "numeric_ratio"
+    },
+    {
+      "name": "Lead Origin_API",
+      "source_column": "Lead Origin",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Origin_Landing Page Submission",
+      "source_column": "Lead Origin",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Origin_Lead Add Form",
+      "source_column": "Lead Origin",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Origin_Lead Import",
+      "source_column": "Lead Origin",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Origin_infrequent_sklearn",
+      "source_column": "Lead Origin",
+      "kind": "onehot_rare"
+    },
+    {
+      "name": "Lead Source_Direct Traffic",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Facebook",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Google",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Olark Chat",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Organic Search",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Reference",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Referral Sites",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Unknown",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_Welingak Website",
+      "source_column": "Lead Source",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Source_infrequent_sklearn",
+      "source_column": "Lead Source",
+      "kind": "onehot_rare"
+    },
+    {
+      "name": "Last Activity_Converted to Lead",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Email Bounced",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Email Link Clicked",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Email Opened",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Form Submitted on Website",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Had a Phone Conversation",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Olark Chat Conversation",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Page Visited on Website",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_SMS Sent",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Unknown",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Unreachable",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_Unsubscribed",
+      "source_column": "Last Activity",
+      "kind": "onehot"
+    },
+    {
+      "name": "Last Activity_infrequent_sklearn",
+      "source_column": "Last Activity",
+      "kind": "onehot_rare"
+    },
+    {
+      "name": "Specialization_Banking, Investment And Insurance",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Business Administration",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_E-Business",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_E-COMMERCE",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Finance Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Healthcare Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Hospitality Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Human Resource Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_IT Projects Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_International Business",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Marketing Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Media and Advertising",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Operations Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Retail Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Rural and Agribusiness",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Services Excellence",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Supply Chain Management",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Travel and Tourism",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "Specialization_Unknown",
+      "source_column": "Specialization",
+      "kind": "onehot"
+    },
+    {
+      "name": "What is your current occupation_Student",
+      "source_column": "What is your current occupation",
+      "kind": "onehot"
+    },
+    {
+      "name": "What is your current occupation_Unemployed",
+      "source_column": "What is your current occupation",
+      "kind": "onehot"
+    },
+    {
+      "name": "What is your current occupation_Unknown",
+      "source_column": "What is your current occupation",
+      "kind": "onehot"
+    },
+    {
+      "name": "What is your current occupation_Working Professional",
+      "source_column": "What is your current occupation",
+      "kind": "onehot"
+    },
+    {
+      "name": "What is your current occupation_infrequent_sklearn",
+      "source_column": "What is your current occupation",
+      "kind": "onehot_rare"
+    },
+    {
+      "name": "What matters most to you in choosing a course_Better Career Prospects",
+      "source_column": "What matters most to you in choosing a course",
+      "kind": "onehot"
+    },
+    {
+      "name": "What matters most to you in choosing a course_Unknown",
+      "source_column": "What matters most to you in choosing a course",
+      "kind": "onehot"
+    },
+    {
+      "name": "What matters most to you in choosing a course_infrequent_sklearn",
+      "source_column": "What matters most to you in choosing a course",
+      "kind": "onehot_rare"
+    },
+    {
+      "name": "How did you hear about X Education_Advertisements",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Email",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Multiple Sources",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Online Search",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Other",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_SMS",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Social Media",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Student of SomeSchool",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Unknown",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "How did you hear about X Education_Word Of Mouth",
+      "source_column": "How did you hear about X Education",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Dual Specialization Student",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Lateral Student",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Other Leads",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Potential Lead",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Student of SomeSchool",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "Lead Profile_Unknown",
+      "source_column": "Lead Profile",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Mumbai",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Other Cities",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Other Cities of Maharashtra",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Other Metro Cities",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Thane & Outskirts",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Tier II Cities",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "City_Unknown",
+      "source_column": "City",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Activity Index_01.High",
+      "source_column": "Asymmetrique Activity Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Activity Index_02.Medium",
+      "source_column": "Asymmetrique Activity Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Activity Index_03.Low",
+      "source_column": "Asymmetrique Activity Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Activity Index_Unknown",
+      "source_column": "Asymmetrique Activity Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Profile Index_01.High",
+      "source_column": "Asymmetrique Profile Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Profile Index_02.Medium",
+      "source_column": "Asymmetrique Profile Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Profile Index_03.Low",
+      "source_column": "Asymmetrique Profile Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "Asymmetrique Profile Index_Unknown",
+      "source_column": "Asymmetrique Profile Index",
+      "kind": "onehot"
+    },
+    {
+      "name": "country_is_india",
+      "source_column": "Country",
+      "kind": "binary_derived"
+    },
+    {
+      "name": "Do Not Email",
+      "source_column": "Do Not Email",
+      "kind": "binary_passthrough"
+    },
+    {
+      "name": "Do Not Call",
+      "source_column": "Do Not Call",
+      "kind": "binary_passthrough"
+    },
+    {
+      "name": "A free copy of Mastering The Interview",
+      "source_column": "A free copy of Mastering The Interview",
+      "kind": "binary_passthrough"
+    },
+    {
+      "name": "Through Recommendations",
+      "source_column": "Through Recommendations",
+      "kind": "binary_passthrough"
+    },
+    {
+      "name": "is_high_intent_activity",
+      "source_column": "Last Activity",
+      "kind": "binary_derived"
+    },
+    {
+      "name": "is_negative_activity",
+      "source_column": "Last Activity",
+      "kind": "binary_derived"
+    }
+  ],
+  "dropped_columns": {
+    "leakage": [
+      "Tags",
+      "Lead Quality",
+      "Last Notable Activity"
+    ],
+    "pii": [
+      "Prospect ID",
+      "Lead Number"
+    ],
+    "dead_bool": [
+      "Magazine",
+      "Receive More Updates About Our Courses",
+      "Update me on Supply Chain Content",
+      "Get updates on DM Content",
+      "I agree to pay the amount through cheque"
+    ],
+    "merged_into_channel_diversity": [
+      "Newspaper Article",
+      "X Education Forums",
+      "Newspaper",
+      "Digital Advertisement",
+      "Search"
+    ]
+  }
+}
