@@ -1,0 +1,68 @@
+{
+  "n_leads": 9240,
+  "attitude_distribution": {
+    "positive_engagement": 3187,
+    "disengaged": 2807,
+    "neutral": 1813,
+    "objection": 1433
+  },
+  "converted_rate": 0.3853896103896104,
+  "attitude_to_converted_auc": 0.6351191302617775,
+  "cramers_v": 0.26333518439295983,
+  "mutual_information_nats": 0.03534738364764273,
+  "crosstab": [
+    {
+      "attitude": "disengaged",
+      "converted_0": 2103.0,
+      "converted_1": 704.0,
+      "converted_0_pct": 74.92,
+      "converted_1_pct": 25.08
+    },
+    {
+      "attitude": "neutral",
+      "converted_0": 1328.0,
+      "converted_1": 485.0,
+      "converted_0_pct": 73.25,
+      "converted_1_pct": 26.75
+    },
+    {
+      "attitude": "objection",
+      "converted_0": 671.0,
+      "converted_1": 762.0,
+      "converted_0_pct": 46.82,
+      "converted_1_pct": 53.18
+    },
+    {
+      "attitude": "positive_engagement",
+      "converted_0": 1577.0,
+      "converted_1": 1610.0,
+      "converted_0_pct": 49.48,
+      "converted_1_pct": 50.52
+    }
+  ],
+  "tabular_leakage_suspects": [
+    {
+      "column": "Tags",
+      "auc": 0.9227,
+      "n_unique": 27,
+      "n_missing": 3353
+    },
+    {
+      "column": "Lead Quality",
+      "auc": 0.7997,
+      "n_unique": 6,
+      "n_missing": 4767
+    },
+    {
+      "column": "Last Notable Activity",
+      "auc": 0.7032,
+      "n_unique": 16,
+      "n_missing": 0
+    }
+  ],
+  "interpretation": [
+    "attitude→Converted AUC sağlıklı bantta (0.635).",
+    "Cramér's V hedef bantta (0.263∈[0.20, 0.40]) — gerçekçi korelasyon.",
+    "⚠️ Tabular sızıntı adayı 'Tags' tek-kolon AUC=0.9227: scoring modelinde DROP edilmeli."
+  ]
+}
