@@ -2,7 +2,7 @@
 
 A two-part system for ranking sales leads: a tabular model that predicts conversion, and a sentiment / intent classifier on interaction text. The two signals combine into a single priority score that a sales rep can act on.
 
-Status: phases 0 (synthetic sentiment training data + leakage diagnostics) and 1 (EDA + shared feature pipeline) are complete; tabular lead scoring, sentiment classifier, and the FastAPI service are next.
+Status: phases 0 (synthetic sentiment training data + leakage diagnostics), 1 (EDA + shared feature pipeline), and 2 (LR baseline + LightGBM lead scoring model) are complete; sentiment classifier and the FastAPI service are next.
 
 ## Setup
 
@@ -30,7 +30,7 @@ Python 3.12 is required.
     tests/                pytest suite
     notebooks/            EDA and experiments
     data/                 raw inputs + data/synthetic/ (LLM-generated notes)
-    artifacts/            trained models + leakage report (gitignored except .gitkeep)
+    artifacts/            trained models + leakage report (mix of tracked summaries and joblibs)
     docs/                 written deliverables
     .github/workflows/    CI (ruff + mypy + pytest)
 
@@ -49,7 +49,7 @@ the relevant doc for depth.
 |---|---|---|---|
 | 0 | Synthetic interaction data + leakage diagnostics | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
 | 1 | EDA + feature engineering | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
-| 2 | Lead scoring model (LR baseline + LGBM) | _coming: `docs/2_lead_scoring.docx`_ | _coming: `notebooks/2_lead_scoring.ipynb`_ |
+| 2 | Lead scoring model (LR baseline + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
 | 3 | Sentiment / intent classifier (XLM-R + LLM baseline) | _coming: `docs/3_sentiment_classifier.docx`_ | _coming: `notebooks/3_sentiment_classifier.ipynb`_ |
 | 4 | Combined priority score | _coming: `docs/4_priority_score.docx`_ | _(no notebook — small wiring step)_ |
 
