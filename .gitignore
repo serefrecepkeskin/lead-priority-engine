@@ -234,6 +234,17 @@ artifacts/*.pt
 artifacts/*.bin
 artifacts/*.safetensors
 artifacts/*.onnx
+# Case-study deliverables: ship the fitted preprocessor + scored models so a
+# clone-and-run flow needs zero bootstrap. The three files are coupled — the
+# models were trained on the output of this exact pipeline — and they travel
+# together in every commit.
+!artifacts/feature_pipeline.joblib
+!artifacts/lead_scoring_lr.joblib
+!artifacts/lead_scoring_lgbm.joblib
+# Rendered charts embedded into the methodology docx files — lightweight PNGs
+# that ship with the deliverable so reviewers can open docx without re-running.
+!artifacts/figures/
+!artifacts/figures/*.png
 
 # Generated/processed data. Raw inputs under data/ stay tracked.
 # data/synthetic/ is tracked: it carries the LLM-generated interaction notes

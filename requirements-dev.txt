@@ -27,6 +27,10 @@ matplotlib~=3.9
 seaborn~=0.13
 openpyxl~=3.1
 
+# Explainability for Phase 2 notebook (row-level SHAP waterfall + summary).
+# Dev-only — production scoring does not call SHAP.
+shap~=0.52
+
 # Offline data-generation pipeline (scripts/datagen/). Not needed at runtime —
 # the API never calls Azure OpenAI or rewrites the methodology docx.
 langchain-openai~=0.2
