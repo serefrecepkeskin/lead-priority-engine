@@ -48,6 +48,13 @@ class Settings(BaseSettings):
     azure_openai_timeout: float | None = None
     azure_openai_reasoning_effort: str | None = None
 
+    # OpenRouter (sentiment classifier in Phase 3). Same pattern as Azure:
+    # all optional at load time, caller asserts before request. Phase 3
+    # uses the OpenAI-compatible endpoint, so ChatOpenAI / OpenAI() clients
+    # work directly by pointing base_url at OpenRouter.
+    open_router_api_key: str | None = None
+    open_router_base_url: str = "https://openrouter.ai/api/v1"
+
     priority_weight_conversion: float = Field(default=0.6, ge=0.0, le=1.0)
     priority_weight_sentiment: float = Field(default=0.4, ge=0.0, le=1.0)
 

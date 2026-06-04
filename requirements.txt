@@ -19,3 +19,8 @@ python-multipart~=0.0.12
 # Parquet I/O — small enough to keep in runtime so the API can load
 # pre-generated synthetic notes if needed for /leads/top demos.
 pyarrow~=18.0
+
+# OpenRouter sentiment classifier client (Phase 3). HTTP/JSON only; the
+# wrapper hand-rolls exponential backoff so no heavier LangChain/OpenAI
+# SDK is pulled into the production image.
+httpx~=0.27
