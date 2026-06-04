@@ -245,6 +245,12 @@ artifacts/*.onnx
 # that ship with the deliverable so reviewers can open docx without re-running.
 !artifacts/figures/
 !artifacts/figures/*.png
+# Phase 3 sentiment predictions: cached LLM outputs so the clone-and-run
+# flow does NOT need to hit OpenRouter. Parquet is canonical; the csv
+# mirror is a human-readable companion for spot-checking in Excel.
+!artifacts/sentiment_predictions/
+!artifacts/sentiment_predictions/*.parquet
+!artifacts/sentiment_predictions/*.csv
 
 # Generated/processed data. Raw inputs under data/ stay tracked.
 # data/synthetic/ is tracked: it carries the LLM-generated interaction notes
@@ -277,3 +283,7 @@ Thumbs.db
 logs/
 *.log
 *docx.py
+# Notebook generators follow the same convention: they materialise the .ipynb
+# from a Python source so contributors can re-render, but the notebook itself
+# is the tracked deliverable. Keep the generator local.
+scripts/build_*_notebook.py
