@@ -19,8 +19,9 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from lead_priority.features import FeatureTransformer
-from lead_priority.models import LeadScoringModel, OpenRouterSentiment
+from lead_priority.core.features import FeatureTransformer
+from lead_priority.core.inference.lead_scoring import LeadScoringModel
+from lead_priority.infra.openrouter.sentiment import OpenRouterSentiment
 from lead_priority.settings import get_settings
 
 logger = logging.getLogger("lead_priority.api.deps")

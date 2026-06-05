@@ -14,9 +14,9 @@ The runtime project is **`src/lead_priority/`** — that is the package that get
 
 One-shot interactive installer (stdlib-only, no prerequisites beyond Python 3.12):
 
-    python3 scripts/setup.py
+    python3 deploy/setup.py
 
-It copies `.env` from the template, prompts for `OPEN_ROUTER_API_KEY` if missing, builds the Docker image (or a venv), and smoke-tests `/healthz` + `/score`. If something fails it points at [`docs/5_deployment.docx`](docs/5_deployment.docx) §9 for the manual recovery table.
+It copies `.env` from the template, prompts for `OPEN_ROUTER_API_KEY` if missing, builds the Docker image (or a venv), and smoke-tests `/healthz` + `/score`. If something fails it points at [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) §9 for the manual recovery table.
 
 ## Setup
 
@@ -42,7 +42,7 @@ GitHub Actions runs ruff + mypy + pytest on every push and pull request. The wor
 
 ## Layout
 
-    src/lead_priority/    runtime package (api, features, models, utils, settings)
+    src/lead_priority/    runtime package (api, core, infra, utils, settings)
     scripts/              CLI entry-points
     scripts/datagen/      offline data-generation modules (kept out of runtime)
     tests/                pytest suite
@@ -81,14 +81,14 @@ exploratory notebook under `notebooks/`. Files are numbered so the chronological
 order is visible at a glance. The README intentionally stays short — click into
 the relevant doc for depth.
 
-| # | Phase | Write-up | Notebook |
-|---|---|---|---|
-| 0 | Synthetic interaction data + leakage diagnostics | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
-| 1 | EDA + feature engineering | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
-| 2 | Lead scoring model (LR baseline + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
-| 3 | Sentiment / intent classifier (OpenRouter LLM zero/few-shot) | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
-| 4 | Combined priority score (weighted average) | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 5 | FastAPI service + Docker deployment (service design + setup guide) | [`docs/5_deployment.docx`](docs/5_deployment.docx) | — |
+| # | Phase | Coverage | Write-up | Notebook |
+|---|---|---|---|---|
+| 0 | Synthetic data + leakage | Synthetic interaction notes (TR / EN / Mix code-switching), labelling strategy, train→serve leakage diagnostics on the synthetic ↔ raw join | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
+| 1 | EDA + feature engineering | Conversion-rate distribution, class imbalance, missing-data patterns, source-level conversion gaps; derived features (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) with the rationale for each | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
+| 2 | Lead scoring model | LR baseline (interpretability) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-20% gain & lift chart; bootstrap-CI paired test; SHAP feature importance | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
+| 3 | Sentiment / intent classifier | Four attitudes (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter open-source LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternative discussed); TR + EN + Mix handling; per-class + per-language confusion matrix + macro-F1 + bootstrap CI; fairness & ethics analysis | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
+| 4 | Combined priority score | Weighted-average mix of `P(conversion)` and sentiment ordinal; weight rationale, sensitivity sweep, meta-model alternative consciously declined | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
+| 5 | FastAPI service + Docker deployment | `POST /score` + `GET /leads/top` endpoint contracts, structured JSON logging + request-ID middleware, Dockerfile multi-stage build, integration tests, manual recovery table; production notes — feature-drift monitoring, retraining cadence, sales-rep feedback loop, false-positive cost framing, 3-day-budget next steps | [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) | — |
 
 **Doc format contract** (every numbered docx follows the same shape):
 
@@ -104,13 +104,55 @@ the relevant doc for depth.
 - Markdown cells between code cells explain *what* the next block does and *why* — a reviewer should be able to read top-to-bottom without running it
 - First markdown cell links back to the phase docx (`docs/N_*.docx`)
 
+## API examples
+
+`POST /score` — combined priority for a single lead. The request payload is `examples/score_request.json`:
+
+```bash
+$ curl -X POST http://localhost:8000/score \
+       -H "Content-Type: application/json" \
+       -d @examples/score_request.json | jq .
+{
+  "p_conversion": 0.7234,
+  "sentiment": {
+    "predicted_attitude": "objection",
+    "sentiment_score": 0.65,
+    "sentiment_unavailable": false,
+    "latency_ms": 412.5
+  },
+  "priority": 0.6940,
+  "weights": { "weight_conversion": 0.6, "weight_sentiment": 0.4 },
+  "model_versions": { "feature_pipeline_schema": 2, "lead_scoring_kind": "lightgbm", "sentiment_model_name": "z-ai/glm-4.5-air:free" },
+  "request_id": "5f2e1c3a..."
+}
+```
+
+`GET /leads/top?n=N` — top-N leads sorted by combined priority, served from the in-memory cache built at startup (no LLM call per request):
+
+```bash
+$ curl 'http://localhost:8000/leads/top?n=3' | jq .
+{
+  "count": 3,
+  "total_available": 924,
+  "leads": [
+    { "lead_id": "74878c4b-...", "p_conversion": 0.994828, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.996897, "language": "tr" },
+    { "lead_id": "2caa32d0-...", "p_conversion": 0.994314, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.996588, "language": "tr" },
+    { "lead_id": "bd5ca024-...", "p_conversion": 0.993130, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.995878, "language": "en" }
+  ],
+  "model_versions": { "feature_pipeline_schema": 2, "lead_scoring_kind": "lightgbm", "sentiment_model_name": "z-ai/glm-4.5-air:free" },
+  "request_id": "d3baf801..."
+}
+```
+
+`min_priority` and `n` (up to 924) are the supported query params; a smaller `n` is a slice off the front of the same sorted list.
+
 ## Deployment
 
-For setup, service design, the failure-mode troubleshooting table, and manual recovery steps, see **[`docs/5_deployment.docx`](docs/5_deployment.docx)**. The one-shot `scripts/setup.py` covers the happy path; the docx covers everything else (Docker vs venv modes, endpoint specs, recovery procedures referenced by the installer when a step fails).
+For setup, service design, the failure-mode troubleshooting table, and manual recovery steps, see **[`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx)**. The one-shot `deploy/setup.py` covers the happy path; the docx covers everything else (Docker vs venv modes, endpoint specs, recovery procedures referenced by the installer when a step fails).
 
-## Tests covering the case-study serving surface
+## Tests covering the serving surface
 
-The case study evaluates the FastAPI service. These four tests prove that surface works; the remaining tests under `tests/` are supporting tests for the model and feature layers.
+The FastAPI service is the surface that runs in production. These four tests prove it works end-to-end; the remaining tests under `tests/` are supporting tests for the model and feature layers.
 
 | File | What it proves |
 |---|---|
@@ -119,29 +161,33 @@ The case study evaluates the FastAPI service. These four tests prove that surfac
 | [`tests/test_api_score.py`](tests/test_api_score.py) | `POST /score` happy path, request validation, graceful sentiment fallback when OpenRouter is unavailable / rate-limited |
 | [`tests/test_api_top_leads.py`](tests/test_api_top_leads.py) | `GET /leads/top` sort, pagination (`n`), `min_priority` filter, served from the precomputed startup cache |
 
-Run with `make test`. The other tests under `tests/` cover the model layer (lead scoring, sentiment, priority) and the feature pipeline — supporting, not the case-study serving surface.
+Run with `make test`. The other tests under `tests/` cover the model layer (lead scoring, sentiment, priority) and the feature pipeline — supporting, not the public serving surface.
 
 ## Project tree
 
 ```
 lead-priority-engine/
 ├── src/lead_priority/          ← the actual project (installed, containerized, served)
-│   ├── api/                    FastAPI app
+│   ├── api/                    FastAPI app (transport layer)
 │   │   ├── main.py             app factory + lifespan (warms models on boot)
 │   │   ├── deps.py             LRU-cached loaders for everything read from artifacts/
 │   │   ├── schemas.py          Pydantic request / response models
 │   │   ├── errors.py           exception handlers (OpenRouter, config, validation)
-│   │   ├── logging.py          JSON formatter + request-id middleware
+│   │   ├── middleware.py       request-id + JSON access-log middleware
 │   │   └── endpoints/
 │   │       ├── health.py       /healthz, /readyz
 │   │       ├── score.py        POST /score (combined priority for a single lead)
 │   │       └── top_leads.py    GET /leads/top (precomputed cache)
-│   ├── features/               feature pipeline (derive + transformers + persistence)
-│   ├── models/
-│   │   ├── lead_scoring.py     LR / LightGBM wrapper
-│   │   ├── sentiment.py        OpenRouter LLM sentiment classifier
-│   │   └── priority.py         weighted-average priority formula
-│   ├── utils/                  small shared helpers
+│   ├── core/                   domain logic (no transport, no external IO)
+│   │   ├── features/           feature pipeline (derive + transformers + persistence)
+│   │   ├── inference/lead_scoring.py   LR / LightGBM wrapper
+│   │   └── scoring/
+│   │       ├── priority.py     weighted-average priority formula
+│   │       └── sentiment_classes.py  SentimentClass + label-to-score map
+│   ├── infra/                  adapters for external services
+│   │   └── openrouter/sentiment.py   OpenRouter LLM sentiment classifier
+│   ├── utils/
+│   │   └── logging.py          JSON formatter + rotating file handler installer
 │   └── settings.py             pydantic-settings loader (.env)
 ├── tests/                      pytest suite (see Tests section above for the API tests)
 ├── artifacts/                  fitted models + metrics read at serving time
@@ -159,11 +205,13 @@ lead-priority-engine/
 ├── docs/                       numbered phase write-ups (0–5) — see Documentation table
 ├── notebooks/                  EDA + experiments matching the doc numbers
 ├── scripts/
-│   ├── setup.py                one-shot interactive installer (stdlib-only)
 │   ├── datagen/                offline Phase-0 synthetic-data tooling (NOT runtime)
 │   ├── generate_interactions.py / evaluate_openrouter_sentiment.py
 │   ├── fit_feature_pipeline.py / train_lead_scoring.py    (offline training)
 │   └── build_*_docx.py / build_3_sentiment_notebook.py    (docx + notebook builders)
+├── deploy/
+│   └── setup.py                one-shot interactive installer (stdlib-only)
+├── logs/                       rotating JSON service logs (gitignored)
 ├── examples/score_request.json example POST /score payload
 ├── Dockerfile                  multi-stage build (runtime only)
 ├── Makefile                    install-dev / lint / format / typecheck / test / run

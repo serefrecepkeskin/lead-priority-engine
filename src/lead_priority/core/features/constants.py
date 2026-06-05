@@ -43,8 +43,8 @@ NEAR_ZERO_BOOLEANS: Final[tuple[str, ...]] = (
 )
 """Marketing-channel binaries with 1–14 'Yes' total each. Individually
 they noise the LR side; summed they form ``channel_diversity_count``
-(see derive.py) which keeps the case-study "how many channels did they
-hear from" signal."""
+(see derive.py) which keeps the "how many channels did they hear from"
+signal alive."""
 
 # -- Numeric columns ----------------------------------------------------------
 

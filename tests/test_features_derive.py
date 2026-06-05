@@ -6,11 +6,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from lead_priority.features.constants import (
+from lead_priority.core.features.constants import (
     REQUIRED_DERIVED_COLUMNS,
     REQUIRED_RAW_COLUMNS,
 )
-from lead_priority.features.derive import derive_features
+from lead_priority.core.features.derive import derive_features
 
 
 def _make_raw_row(**overrides: object) -> dict[str, object]:

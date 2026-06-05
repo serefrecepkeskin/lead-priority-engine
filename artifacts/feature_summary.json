@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "seed": 42,
   "n_rows_fit": 9240,
   "n_features": 104,

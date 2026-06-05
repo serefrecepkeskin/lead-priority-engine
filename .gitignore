@@ -234,7 +234,7 @@ artifacts/*.pt
 artifacts/*.bin
 artifacts/*.safetensors
 artifacts/*.onnx
-# Case-study deliverables: ship the fitted preprocessor + scored models so a
+# Tracked deliverables: ship the fitted preprocessor + scored models so a
 # clone-and-run flow needs zero bootstrap. The three files are coupled — the
 # models were trained on the output of this exact pipeline — and they travel
 # together in every commit.
@@ -254,7 +254,7 @@ artifacts/*.onnx
 
 # Generated/processed data. Raw inputs under data/ stay tracked.
 # data/synthetic/ is tracked: it carries the LLM-generated interaction notes
-# used by the sentiment classifier and is part of the case-study deliverable.
+# used by the sentiment classifier and is part of the tracked deliverable.
 data/processed/
 data/interim/
 

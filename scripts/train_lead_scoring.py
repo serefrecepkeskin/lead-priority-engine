@@ -43,9 +43,9 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import GridSearchCV, train_test_split
 
-from lead_priority.features import FeatureTransformer
-from lead_priority.features.constants import SEED
-from lead_priority.models import LeadScoringModel
+from lead_priority.core.features import FeatureTransformer
+from lead_priority.core.features.constants import SEED
+from lead_priority.core.inference.lead_scoring import LeadScoringModel
 from lead_priority.settings import REPO_ROOT
 
 logger = logging.getLogger("train_lead_scoring")

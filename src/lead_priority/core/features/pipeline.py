@@ -29,16 +29,16 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from lead_priority.features.constants import (
+from lead_priority.core.features.constants import (
     BASE_NUMERIC,
     CATEGORICAL_ONE_HOT,
     DERIVED_NUMERIC,
     PASSTHROUGH_BINARIES,
 )
-from lead_priority.features.derive import derive_features
-from lead_priority.features.transformers import PercentileClipper, SelectToNaN
+from lead_priority.core.features.derive import derive_features
+from lead_priority.core.features.transformers import PercentileClipper, SelectToNaN
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 """Bumped whenever the pipeline structure or the serialized bundle layout
 changes. Loaders compare against this and refuse to load older bundles."""
 

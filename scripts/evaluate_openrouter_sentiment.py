@@ -38,8 +38,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-from lead_priority.features.constants import SEED
-from lead_priority.models import (
+from lead_priority.core.features.constants import SEED
+from lead_priority.infra.openrouter.sentiment import (
     MODEL_ALIASES,
     OpenRouterError,
     OpenRouterRateLimitError,

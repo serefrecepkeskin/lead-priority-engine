@@ -7,7 +7,7 @@ plotting, and notebook exploration live under ``scripts/`` and ``notebooks/``
 and must never be imported from here — otherwise the production image would
 have to carry matplotlib / sklearn.model_selection / etc.
 
-The wrapper mirrors :class:`lead_priority.features.pipeline.FeatureTransformer`:
+The wrapper mirrors :class:`lead_priority.core.features.pipeline.FeatureTransformer`:
 a dataclass-shaped bundle holding the fitted estimator, the feature-name list
 used at training time (for input-shape validation), and a schema version so
 loaders fail loudly on bundle drift.
@@ -66,7 +66,7 @@ class LeadScoringModel:
 
         Args:
             x: Feature matrix shaped ``(n_samples, n_features)``, produced by
-                :meth:`lead_priority.features.FeatureTransformer.transform`.
+                :meth:`lead_priority.core.features.FeatureTransformer.transform`.
 
         Returns:
             One-dimensional ndarray of length ``n_samples`` with values in

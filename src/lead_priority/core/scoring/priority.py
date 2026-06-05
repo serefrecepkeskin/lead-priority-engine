@@ -3,10 +3,10 @@
 This is the Phase 4 wiring module. It combines the Phase 2 lead-scoring
 probability with the Phase 3 sentiment score into a single number a sales rep
 can sort on. The formula is the simplest defensible mix — a fixed weighted
-average — because the case study explicitly asks for product intuition over a
-perfectly tuned formula, and because either component being uncalibrated
-(LGBM probabilities or LLM-label confidence) makes a learned meta-model
-brittle on the kind of synthetic data this project ships with.
+average — because the design goal here is product intuition over a perfectly
+tuned formula, and because either component being uncalibrated (LGBM
+probabilities or LLM-label confidence) makes a learned meta-model brittle on
+the kind of synthetic data this project ships with.
 
 Serving flow::
 
@@ -28,7 +28,7 @@ from collections.abc import Mapping, Sequence
 
 import numpy as np
 
-from lead_priority.models.sentiment import SENTIMENT_CLASSES, SENTIMENT_SCORE_MAP
+from lead_priority.core.scoring.sentiment_classes import SENTIMENT_CLASSES, SENTIMENT_SCORE_MAP
 from lead_priority.settings import get_settings
 
 WEIGHT_SUM_TOLERANCE = 1e-6

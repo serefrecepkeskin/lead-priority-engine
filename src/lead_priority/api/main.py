@@ -18,8 +18,9 @@ from fastapi import FastAPI
 from lead_priority.api import deps
 from lead_priority.api.endpoints import health, score, top_leads
 from lead_priority.api.errors import register_handlers
-from lead_priority.api.logging import RequestIdMiddleware, configure_logging
+from lead_priority.api.middleware import RequestIdMiddleware
 from lead_priority.settings import get_settings
+from lead_priority.utils.logging import configure_logging
 
 logger = logging.getLogger("lead_priority.api")
 
@@ -58,8 +59,9 @@ def create_app() -> FastAPI:
         version=_package_version(),
         description=(
             "Tabular lead scoring + interaction sentiment combined into a "
-            "single priority score. See docs/5_deployment.docx for setup, "
-            "service design, and operational notes."
+            "single priority score. See "
+            "docs/5_fastapi_serving_and_deployment.docx for setup, service "
+            "design, and operational notes."
         ),
         lifespan=lifespan,
     )

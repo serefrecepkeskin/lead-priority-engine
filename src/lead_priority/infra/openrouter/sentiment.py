@@ -1,9 +1,9 @@
 """Serving-side sentiment / intent classifier: OpenRouter LLM wrapper.
 
-Phase 3 takes the "open-source LLM, zero/few-shot" path the case study lists
-alongside fine-tuning an encoder (XLM-R / DistilBERT). The reasoning for that
-choice is documented in ``docs/3_sentiment_classifier.docx`` §1; in short the
-LLM route lets the production runtime add a class in minutes without any
+Phase 3 takes the "open-source LLM, zero/few-shot" path; the alternative
+considered was fine-tuning an encoder (XLM-R / DistilBERT). The reasoning for
+that choice is documented in ``docs/3_sentiment_classifier.docx`` §1; in short
+the LLM route lets the production runtime add a class in minutes without any
 training step, and the modelling depth budget was spent on Phase 2.
 
 This module is import-safe with no API key — every call site asserts the key
@@ -29,43 +29,18 @@ import random
 import re
 import time
 from dataclasses import dataclass, field
-from typing import Any, Literal, cast, get_args
+from typing import Any, cast, get_args
 
 import httpx
 
+from lead_priority.core.scoring.sentiment_classes import (
+    SENTIMENT_CLASSES,
+    SENTIMENT_SCORE_MAP,
+    SentimentClass,
+)
 from lead_priority.settings import get_settings
 
 logger = logging.getLogger(__name__)
-
-SentimentClass = Literal[
-    "positive_engagement",
-    "objection",
-    "neutral",
-    "disengaged",
-]
-
-SENTIMENT_CLASSES: tuple[SentimentClass, ...] = (
-    "positive_engagement",
-    "objection",
-    "neutral",
-    "disengaged",
-)
-"""The four interaction-note attitudes synthesised in Phase 0."""
-
-SENTIMENT_SCORE_MAP: dict[str, float] = {
-    "positive_engagement": 1.0,
-    "objection": 0.65,
-    "neutral": 0.40,
-    "disengaged": 0.10,
-}
-"""Sentiment → priority-score mapping consumed by Phase 4 ``compute_priority``.
-
-The 0.65 weight on ``objection`` is the load-bearing decision: the Phase 0
-synthetic crosstab shows ~53% of objection leads convert, so collapsing
-objections to a low score would discard real buying signal. The numbers
-come from ``notes/next_steps.md`` §4 and are restated in
-``docs/3_sentiment_classifier.docx`` §12.
-"""
 
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 
@@ -343,7 +318,7 @@ class OpenRouterSentiment:
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/case-study/lead-priority-engine",
+            "HTTP-Referer": "https://github.com/SerefRecepKeskin/lead-priority-engine",
             "X-Title": "Lead Priority Engine Sentiment Classifier",
         }
         start = time.perf_counter()
@@ -438,12 +413,9 @@ class OpenRouterSentiment:
 
 __all__ = [
     "MODEL_ALIASES",
-    "SENTIMENT_CLASSES",
-    "SENTIMENT_SCORE_MAP",
     "OpenRouterError",
     "OpenRouterMalformedError",
     "OpenRouterPermanentError",
     "OpenRouterRateLimitError",
     "OpenRouterSentiment",
-    "SentimentClass",
 ]

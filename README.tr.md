@@ -14,9 +14,9 @@ Durum: 0'dan 5'e kadar olan tüm fazlar tamamlanmıştır — sentetik duygu eğ
 
 Tek komutla etkileşimli kurulum (yalnızca standart kütüphane kullanılır, Python 3.12 dışında ön koşul yoktur):
 
-    python3 scripts/setup.py
+    python3 deploy/setup.py
 
-Şablondan `.env` kopyalanır, eksikse `OPEN_ROUTER_API_KEY` istenir, Docker imajı (veya venv) inşa edilir ve `/healthz` + `/score` üzerinde sigara testi (smoke test) çalıştırılır. Herhangi bir adım hata verirse [`docs/5_deployment.docx`](docs/5_deployment.docx) §9'daki manuel kurtarma tablosuna yönlendirilir.
+Şablondan `.env` kopyalanır, eksikse `OPEN_ROUTER_API_KEY` istenir, Docker imajı (veya venv) inşa edilir ve `/healthz` + `/score` üzerinde sigara testi (smoke test) çalıştırılır. Herhangi bir adım hata verirse [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) §9'daki manuel kurtarma tablosuna yönlendirilir.
 
 ## Kurulum
 
@@ -42,7 +42,7 @@ GitHub Actions her push ve pull request'te ruff + mypy + pytest çalıştırır.
 
 ## Yerleşim
 
-    src/lead_priority/    çalışma zamanı paketi (api, features, models, utils, settings)
+    src/lead_priority/    çalışma zamanı paketi (api, core, infra, utils, settings)
     scripts/              CLI giriş noktaları
     scripts/datagen/      çevrimdışı veri üretim modülleri (çalışma zamanının dışında)
     tests/                pytest test takımı
@@ -78,14 +78,14 @@ Repo iki LLM sağlayıcısına atıf yapar. İkisinin rolleri tamamen farklıdı
 
 Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `notebooks/` altındadır. Dosyalar numaralandırılmıştır, böylece kronolojik sıra bir bakışta görülür. README kasıtlı olarak kısa tutulmuştur — derinlik için ilgili belgeye tıklayın.
 
-| # | Faz | Yazım | Notebook |
-|---|---|---|---|
-| 0 | Sentetik etkileşim verisi + sızıntı tanılaması | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
-| 1 | EDA + özellik mühendisliği | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
-| 2 | Lead skorlama modeli (LR taban + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
-| 3 | Duygu / niyet sınıflandırıcısı (OpenRouter LLM zero/few-shot) | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
-| 4 | Birleşik öncelik skoru (ağırlıklı ortalama) | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 5 | FastAPI servisi + Docker dağıtımı (servis tasarımı + kurulum rehberi) | [`docs/5_deployment.docx`](docs/5_deployment.docx) | — |
+| # | Faz | Kapsam | Yazım | Notebook |
+|---|---|---|---|---|
+| 0 | Sentetik veri + sızıntı tanılaması | Sentetik etkileşim notları (TR / EN / Mix code-switching), etiketleme stratejisi, sentetik ↔ ham join üzerinde train→serve sızıntı tanılaması | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
+| 1 | EDA + özellik mühendisliği | Dönüşüm oranı dağılımı, sınıf dengesizliği, eksik veri paterni, kaynak bazında dönüşüm farkları; türetilen özellikler (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) her birinin gerekçesiyle | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
+| 2 | Lead skorlama modeli | LR taban (yorumlanabilirlik) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-%20 gain & lift chart; bootstrap-CI paired test; SHAP feature önemi | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
+| 3 | Duygu / niyet sınıflandırıcısı | Dört attitude (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter açık kaynak LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternatifi tartışıldı); TR + EN + Mix dil desteği; sınıf-bazlı + dil-bazlı confusion matrix + macro-F1 + bootstrap CI; fairness ve etik analizi | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
+| 4 | Birleşik öncelik skoru | `P(conversion)` + sentiment ordinal ağırlıklı ortalama; ağırlık gerekçesi, sensitivity sweep, meta-model alternatifi bilinçli olarak elendi | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
+| 5 | FastAPI servisi + Docker dağıtımı | `POST /score` + `GET /leads/top` endpoint sözleşmeleri, yapılandırılmış JSON logging + request-ID middleware, çok aşamalı Dockerfile, integration testleri, manuel kurtarma tablosu; üretim notları — feature drift takibi, retrain sıklığı, satış temsilcisi geri bildirim döngüsü, false-positive maliyet çerçevesi, 3-gün bütçesi sonraki adımlar | [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) | — |
 
 **Belge format sözleşmesi** (numaralı her docx aynı biçimi izler):
 
@@ -101,13 +101,55 @@ Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `note
 - Kod hücreleri arasındaki markdown hücreleri bir sonraki bloğun *ne* yaptığını ve *neden* yaptığını açıklar — incelemeci kodu çalıştırmadan baştan sona okuyabilmelidir
 - İlk markdown hücresi faz docx'ine (`docs/N_*.docx`) geri bağlantı verir
 
+## API örnekleri
+
+`POST /score` — tek bir lead için birleşik priority skoru. İstek yükü `examples/score_request.json`:
+
+```bash
+$ curl -X POST http://localhost:8000/score \
+       -H "Content-Type: application/json" \
+       -d @examples/score_request.json | jq .
+{
+  "p_conversion": 0.7234,
+  "sentiment": {
+    "predicted_attitude": "objection",
+    "sentiment_score": 0.65,
+    "sentiment_unavailable": false,
+    "latency_ms": 412.5
+  },
+  "priority": 0.6940,
+  "weights": { "weight_conversion": 0.6, "weight_sentiment": 0.4 },
+  "model_versions": { "feature_pipeline_schema": 2, "lead_scoring_kind": "lightgbm", "sentiment_model_name": "z-ai/glm-4.5-air:free" },
+  "request_id": "5f2e1c3a..."
+}
+```
+
+`GET /leads/top?n=N` — birleşik priority'ye göre sıralı top-N lead. Açılışta inşa edilen in-memory cache'ten servis edilir (istek başına LLM çağrısı **yok**):
+
+```bash
+$ curl 'http://localhost:8000/leads/top?n=3' | jq .
+{
+  "count": 3,
+  "total_available": 924,
+  "leads": [
+    { "lead_id": "74878c4b-...", "p_conversion": 0.994828, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.996897, "language": "tr" },
+    { "lead_id": "2caa32d0-...", "p_conversion": 0.994314, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.996588, "language": "tr" },
+    { "lead_id": "bd5ca024-...", "p_conversion": 0.993130, "predicted_attitude": "positive_engagement", "sentiment_score": 1.0, "priority": 0.995878, "language": "en" }
+  ],
+  "model_versions": { "feature_pipeline_schema": 2, "lead_scoring_kind": "lightgbm", "sentiment_model_name": "z-ai/glm-4.5-air:free" },
+  "request_id": "d3baf801..."
+}
+```
+
+`min_priority` ve `n` (en fazla 924) desteklenen query parametreleri; daha küçük `n` aynı sıralı listenin baştan bir dilimini döner.
+
 ## Dağıtım (Deployment)
 
-Kurulum, servis tasarımı, hata-modu sorun giderme tablosu ve manuel kurtarma adımları için **[`docs/5_deployment.docx`](docs/5_deployment.docx)** dosyasına bakın. Tek komutluk `scripts/setup.py` mutlu yolu kapsar; docx ise geri kalan her şeyi kapsar (Docker ve venv modları, uç nokta tanımları, bir adım hata verdiğinde kurulum betiğinin atıf yaptığı kurtarma prosedürleri).
+Kurulum, servis tasarımı, hata-modu sorun giderme tablosu ve manuel kurtarma adımları için **[`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx)** dosyasına bakın. Tek komutluk `deploy/setup.py` mutlu yolu kapsar; docx ise geri kalan her şeyi kapsar (Docker ve venv modları, uç nokta tanımları, bir adım hata verdiğinde kurulum betiğinin atıf yaptığı kurtarma prosedürleri).
 
-## Vaka çalışmasının servis yüzeyini kapsayan testler
+## Servis yüzeyini kapsayan testler
 
-Vaka çalışması FastAPI servisini değerlendirir. Aşağıdaki dört test bu yüzeyin çalıştığını ispatlar; `tests/` altındaki diğer testler model ve özellik katmanları için destekleyici testlerdir.
+FastAPI servisi üretimde çalışan yüzeydir. Aşağıdaki dört test bu yüzeyin uçtan uca çalıştığını ispatlar; `tests/` altındaki diğer testler model ve özellik katmanları için destekleyici testlerdir.
 
 | Dosya | Ne ispatlar |
 |---|---|
@@ -116,29 +158,33 @@ Vaka çalışması FastAPI servisini değerlendirir. Aşağıdaki dört test bu 
 | [`tests/test_api_score.py`](tests/test_api_score.py) | `POST /score` mutlu yolu, istek doğrulama, OpenRouter erişilemez / rate-limit olduğunda nötr duyguya zarif düşüş |
 | [`tests/test_api_top_leads.py`](tests/test_api_top_leads.py) | `GET /leads/top` sıralama, sayfalama (`n`), `min_priority` filtresi, önceden hesaplanmış açılış önbelleğinden sunum |
 
-`make test` ile çalıştırılır. `tests/` altındaki diğer testler model katmanını (lead scoring, sentiment, priority) ve özellik hattını kapsar — destekleyici testlerdir, vaka çalışmasının servis yüzeyi değil.
+`make test` ile çalıştırılır. `tests/` altındaki diğer testler model katmanını (lead scoring, sentiment, priority) ve özellik hattını kapsar — destekleyici testlerdir, ana servis yüzeyi değil.
 
 ## Proje ağacı
 
 ```
 lead-priority-engine/
 ├── src/lead_priority/          ← asıl proje (kurulan, konteynerlenen, servis edilen)
-│   ├── api/                    FastAPI uygulaması
+│   ├── api/                    FastAPI uygulaması (transport katmanı)
 │   │   ├── main.py             uygulama factory + lifespan (açılışta modelleri ısıtır)
 │   │   ├── deps.py             artifacts/ klasöründen okunan her şey için LRU önbellekli yükleyiciler
 │   │   ├── schemas.py          Pydantic istek / yanıt modelleri
 │   │   ├── errors.py           istisna işleyicileri (OpenRouter, yapılandırma, doğrulama)
-│   │   ├── logging.py          JSON formatlayıcı + request-id middleware
+│   │   ├── middleware.py       request-id + JSON erişim-log middleware
 │   │   └── endpoints/
 │   │       ├── health.py       /healthz, /readyz
 │   │       ├── score.py        POST /score (tek lead için birleşik öncelik)
 │   │       └── top_leads.py    GET /leads/top (önceden hesaplanmış önbellek)
-│   ├── features/               özellik hattı (derive + transformers + kalıcılık)
-│   ├── models/
-│   │   ├── lead_scoring.py     LR / LightGBM sarmalayıcı
-│   │   ├── sentiment.py        OpenRouter LLM duygu sınıflandırıcı
-│   │   └── priority.py         ağırlıklı ortalama öncelik formülü
-│   ├── utils/                  küçük ortak yardımcılar
+│   ├── core/                   domain mantığı (transport yok, dış IO yok)
+│   │   ├── features/           özellik hattı (derive + transformers + kalıcılık)
+│   │   ├── inference/lead_scoring.py   LR / LightGBM sarmalayıcı
+│   │   └── scoring/
+│   │       ├── priority.py     ağırlıklı ortalama öncelik formülü
+│   │       └── sentiment_classes.py  SentimentClass + etiket-skor map'i
+│   ├── infra/                  dış servisler için adaptörler
+│   │   └── openrouter/sentiment.py   OpenRouter LLM duygu sınıflandırıcı
+│   ├── utils/
+│   │   └── logging.py          JSON formatlayıcı + rotating dosya handler kurulumu
 │   └── settings.py             pydantic-settings yükleyicisi (.env)
 ├── tests/                      pytest takımı (API testleri için yukarıdaki Testler bölümüne bakın)
 ├── artifacts/                  çalışma anında okunan eğitilmiş modeller + metrikler
@@ -156,11 +202,13 @@ lead-priority-engine/
 ├── docs/                       numaralı faz yazımları (0–5) — Belgeler tablosuna bakın
 ├── notebooks/                  belge numaralarıyla eşleşen EDA + deneyler
 ├── scripts/
-│   ├── setup.py                tek komutluk etkileşimli kurulum (yalnızca standart kütüphane)
 │   ├── datagen/                çevrimdışı Faz-0 sentetik veri araçları (çalışma zamanı DEĞİL)
 │   ├── generate_interactions.py / evaluate_openrouter_sentiment.py
 │   ├── fit_feature_pipeline.py / train_lead_scoring.py    (çevrimdışı eğitim)
 │   └── build_*_docx.py / build_3_sentiment_notebook.py    (docx + notebook üreticileri)
+├── deploy/
+│   └── setup.py                tek komutluk etkileşimli kurulum (yalnızca standart kütüphane)
+├── logs/                       rotating JSON servis logları (gitignore'da)
 ├── examples/score_request.json örnek POST /score yükü
 ├── Dockerfile                  çok aşamalı build (yalnızca çalışma zamanı)
 ├── Makefile                    install-dev / lint / format / typecheck / test / run

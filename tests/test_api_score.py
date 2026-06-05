@@ -12,7 +12,7 @@ import respx
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from lead_priority.models import OpenRouterSentiment
+from lead_priority.infra.openrouter.sentiment import OpenRouterSentiment
 
 EXAMPLE_PAYLOAD_PATH = Path(__file__).resolve().parents[1] / "examples" / "score_request.json"
 CHAT_COMPLETIONS_URL = "https://openrouter.ai/api/v1/chat/completions"

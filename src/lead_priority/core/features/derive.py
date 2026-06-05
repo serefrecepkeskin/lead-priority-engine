@@ -4,7 +4,7 @@
 
 * ``scripts/fit_feature_pipeline.py`` (training): runs once over the full
   CSV before fitting the sklearn pipeline.
-* :class:`lead_priority.features.pipeline.FeatureTransformer.transform`
+* :class:`lead_priority.core.features.pipeline.FeatureTransformer.transform`
   (serving): runs over a single-row DataFrame coming from FastAPI's JSON
   payload before the sklearn pipeline scores it.
 
@@ -17,7 +17,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from lead_priority.features.constants import (
+from lead_priority.core.features.constants import (
     DEAD_BOOLEANS,
     HIGH_INTENT_ACTIVITIES,
     ID_PII_DROP,

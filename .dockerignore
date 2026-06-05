@@ -29,11 +29,16 @@ tests/
 examples/
 
 # Offline data-gen + docx + notebook builders ship in scripts/ but
-# never run inside the container.
+# never run inside the container. deploy/ holds the interactive
+# installer, which also has no place in the runtime image.
 scripts/datagen/
 scripts/build_*_docx.py
 scripts/build_*_notebook.py
-scripts/setup.py
+deploy/
+
+# Runtime logs land under logs/ (gitignored too). The image must not
+# bake any host log state.
+logs/
 
 # Tracked artefacts that are NOT loaded by the FastAPI service.
 artifacts/figures/
@@ -46,10 +51,6 @@ artifacts/feature_summary.json
 data/processed/
 data/interim/
 data/synthetic/
-data/Senior_AI_Engineer_Case_Study.docx
-
-# Case-study deliverable file at repo root.
-Senior_AI_Engineer_Case_Study.docx
 
 # Logs + OS junk
 *.log

@@ -27,8 +27,8 @@ from typing import Any
 
 import pandas as pd
 
-from lead_priority.features import build_pipeline, derive_features
-from lead_priority.features.constants import (
+from lead_priority.core.features import build_pipeline, derive_features
+from lead_priority.core.features.constants import (
     BASE_NUMERIC,
     DEAD_BOOLEANS,
     DERIVED_NUMERIC,
@@ -38,7 +38,7 @@ from lead_priority.features.constants import (
     PASSTHROUGH_BINARIES,
     SEED,
 )
-from lead_priority.features.pipeline import SCHEMA_VERSION, FeatureTransformer
+from lead_priority.core.features.pipeline import SCHEMA_VERSION, FeatureTransformer
 from lead_priority.settings import REPO_ROOT
 
 logger = logging.getLogger("fit_feature_pipeline")
@@ -79,7 +79,7 @@ def _classify_feature(name: str) -> tuple[str, str]:  # noqa: PLR0911
 
 
 # Pre-computed set so _classify_feature is O(k) instead of O(n*k).
-from lead_priority.features.constants import CATEGORICAL_ONE_HOT  # noqa: E402
+from lead_priority.core.features.constants import CATEGORICAL_ONE_HOT  # noqa: E402
 
 _CATEGORICAL_NAMES_LOOKUP: set[str] = set(CATEGORICAL_ONE_HOT)
 

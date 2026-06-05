@@ -1,6 +1,6 @@
 """Unit tests for the Phase 4 priority-score wiring.
 
-The module under test (`lead_priority.models.priority`) is a pure-Python
+The module under test (`lead_priority.core.scoring.priority`) is a pure-Python
 serving function: no HTTP, no model load, no disk I/O. Tests therefore avoid
 fixtures from `tests/test_models_lead_scoring.py` and stay self-contained.
 
@@ -13,14 +13,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-import lead_priority.models.priority as priority_module
+import lead_priority.core.scoring.priority as priority_module
 import lead_priority.settings as settings_module
-from lead_priority.models import (
-    SENTIMENT_CLASSES,
-    SENTIMENT_SCORE_MAP,
-    batch_compute_priority,
-    compute_priority,
-)
+from lead_priority.core.scoring.priority import batch_compute_priority, compute_priority
+from lead_priority.core.scoring.sentiment_classes import SENTIMENT_CLASSES, SENTIMENT_SCORE_MAP
 
 
 @pytest.fixture(autouse=True)
