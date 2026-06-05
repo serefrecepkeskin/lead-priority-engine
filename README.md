@@ -81,14 +81,41 @@ exploratory notebook under `notebooks/`. Files are numbered so the chronological
 order is visible at a glance. The README intentionally stays short — click into
 the relevant doc for depth.
 
-| # | Phase | Coverage | Write-up | Notebook |
-|---|---|---|---|---|
-| 0 | Synthetic data + leakage | Synthetic interaction notes (TR / EN / Mix code-switching), labelling strategy, train→serve leakage diagnostics on the synthetic ↔ raw join | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
-| 1 | EDA + feature engineering | Conversion-rate distribution, class imbalance, missing-data patterns, source-level conversion gaps; derived features (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) with the rationale for each | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
-| 2 | Lead scoring model | LR baseline (interpretability) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-20% gain & lift chart; bootstrap-CI paired test; SHAP feature importance | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
-| 3 | Sentiment / intent classifier | Four attitudes (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter open-source LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternative discussed); TR + EN + Mix handling; per-class + per-language confusion matrix + macro-F1 + bootstrap CI; fairness & ethics analysis | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
-| 4 | Combined priority score | Weighted-average mix of `P(conversion)` and sentiment ordinal; weight rationale, sensitivity sweep, meta-model alternative consciously declined | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 5 | FastAPI service + Docker deployment | `POST /score` + `GET /leads/top` endpoint contracts, structured JSON logging + request-ID middleware, Dockerfile multi-stage build, integration tests, manual recovery table; production notes — feature-drift monitoring, retraining cadence, sales-rep feedback loop, false-positive cost framing, 3-day-budget next steps | [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) | — |
+### Phase 0 — Synthetic data + leakage
+
+Synthetic interaction notes (TR / EN / Mix code-switching), labelling strategy, train→serve leakage diagnostics on the synthetic ↔ raw join.
+
+📄 [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) · 📓 [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb)
+
+### Phase 1 — EDA + feature engineering
+
+Conversion-rate distribution, class imbalance, missing-data patterns, source-level conversion gaps; derived features (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) with the rationale for each.
+
+📄 [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) · 📓 [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb)
+
+### Phase 2 — Lead scoring model
+
+LR baseline (interpretability) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-20% gain & lift chart; bootstrap-CI paired test; SHAP feature importance.
+
+📄 [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) · 📓 [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb)
+
+### Phase 3 — Sentiment / intent classifier
+
+Four attitudes (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter open-source LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternative discussed); TR + EN + Mix handling; per-class + per-language confusion matrix + macro-F1 + bootstrap CI; fairness & ethics analysis.
+
+📄 [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) · 📓 [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb)
+
+### Phase 4 — Combined priority score
+
+Weighted-average mix of `P(conversion)` and sentiment ordinal; weight rationale, sensitivity sweep, meta-model alternative consciously declined.
+
+📄 [`docs/4_priority_score.docx`](docs/4_priority_score.docx) · 📓 [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb)
+
+### Phase 5 — FastAPI service + Docker deployment
+
+`POST /score` + `GET /leads/top` endpoint contracts, structured JSON logging + request-ID middleware, Dockerfile multi-stage build, integration tests, manual recovery table; production notes — feature-drift monitoring, retraining cadence, sales-rep feedback loop, false-positive cost framing, 3-day-budget next steps.
+
+📄 [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) · (no notebook)
 
 **Doc format contract** (every numbered docx follows the same shape):
 
@@ -105,6 +132,8 @@ the relevant doc for depth.
 - First markdown cell links back to the phase docx (`docs/N_*.docx`)
 
 ## API examples
+
+> Interactive Swagger UI: **http://127.0.0.1:8000/docs** — the “Try it out” button on `POST /score` is prefilled with a complete sample payload, so you can fire a real request without crafting JSON by hand. Redoc is also available at `/redoc`.
 
 `POST /score` — combined priority for a single lead. The request payload is `examples/score_request.json`:
 
