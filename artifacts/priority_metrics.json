@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "weights": {
+    "weight_conversion": 0.6,
+    "weight_sentiment": 0.4
+  },
+  "sentiment_score_map": {
+    "positive_engagement": 1.0,
+    "objection": 0.65,
+    "neutral": 0.4,
+    "disengaged": 0.1
+  },
+  "leakage_stats": {
+    "n_total": 924,
+    "n_in_lgbm_train": 561,
+    "n_in_lgbm_val": 173,
+    "n_in_lgbm_test": 190
+  },
+  "n_clean": 190,
+  "n_full": 924,
+  "top_n_capture_clean": [
+    {
+      "n": 10,
+      "actual_n": 10,
+      "captured_converted": 10,
+      "capture_rate": 1.0,
+      "base_rate": 0.4263157894736842,
+      "lift": 2.345679012345679
+    },
+    {
+      "n": 25,
+      "actual_n": 25,
+      "captured_converted": 22,
+      "capture_rate": 0.88,
+      "base_rate": 0.4263157894736842,
+      "lift": 2.0641975308641975
+    },
+    {
+      "n": 50,
+      "actual_n": 50,
+      "captured_converted": 41,
+      "capture_rate": 0.82,
+      "base_rate": 0.4263157894736842,
+      "lift": 1.9234567901234567
+    },
+    {
+      "n": 100,
+      "actual_n": 100,
+      "captured_converted": 66,
+      "capture_rate": 0.66,
+      "base_rate": 0.4263157894736842,
+      "lift": 1.5481481481481483
+    }
+  ],
+  "top_n_capture_full_illustrative": [
+    {
+      "n": 10,
+      "actual_n": 10,
+      "captured_converted": 10,
+      "capture_rate": 1.0,
+      "base_rate": 0.40584415584415584,
+      "lift": 2.464
+    },
+    {
+      "n": 25,
+      "actual_n": 25,
+      "captured_converted": 25,
+      "capture_rate": 1.0,
+      "base_rate": 0.40584415584415584,
+      "lift": 2.464
+    },
+    {
+      "n": 50,
+      "actual_n": 50,
+      "captured_converted": 50,
+      "capture_rate": 1.0,
+      "base_rate": 0.40584415584415584,
+      "lift": 2.464
+    },
+    {
+      "n": 100,
+      "actual_n": 100,
+      "captured_converted": 100,
+      "capture_rate": 1.0,
+      "base_rate": 0.40584415584415584,
+      "lift": 2.464
+    }
+  ],
+  "weight_sensitivity_clean": [
+    {
+      "weight_conversion": 0.4,
+      "weight_sentiment": 0.6,
+      "top_n": 50,
+      "capture_rate": 0.74,
+      "captured_converted": 37,
+      "lift": 1.7358024691358025
+    },
+    {
+      "weight_conversion": 0.5,
+      "weight_sentiment": 0.5,
+      "top_n": 50,
+      "capture_rate": 0.8,
+      "captured_converted": 40,
+      "lift": 1.8765432098765433
+    },
+    {
+      "weight_conversion": 0.6,
+      "weight_sentiment": 0.4,
+      "top_n": 50,
+      "capture_rate": 0.82,
+      "captured_converted": 41,
+      "lift": 1.9234567901234567
+    },
+    {
+      "weight_conversion": 0.7,
+      "weight_sentiment": 0.30000000000000004,
+      "top_n": 50,
+      "capture_rate": 0.82,
+      "captured_converted": 41,
+      "lift": 1.9234567901234567
+    },
+    {
+      "weight_conversion": 0.8,
+      "weight_sentiment": 0.19999999999999996,
+      "top_n": 50,
+      "capture_rate": 0.86,
+      "captured_converted": 43,
+      "lift": 2.017283950617284
+    }
+  ],
+  "segment_distribution_full": [
+    {
+      "predicted_attitude": "positive_engagement",
+      "n": 380,
+      "priority_mean": 0.7403987956758924,
+      "priority_median": 0.8155111155456489,
+      "priority_std": 0.21550002348856068,
+      "converted_rate": 0.5421052631578948
+    },
+    {
+      "predicted_attitude": "objection",
+      "n": 119,
+      "priority_mean": 0.594630105046737,
+      "priority_median": 0.6462386979814102,
+      "priority_std": 0.22805720485948103,
+      "converted_rate": 0.4957983193277311
+    },
+    {
+      "predicted_attitude": "neutral",
+      "n": 159,
+      "priority_mean": 0.30918392679731704,
+      "priority_median": 0.21872225989205848,
+      "priority_std": 0.1866357568912035,
+      "converted_rate": 0.2389937106918239
+    },
+    {
+      "predicted_attitude": "disengaged",
+      "n": 266,
+      "priority_mean": 0.21546217954212984,
+      "priority_median": 0.10537556219516064,
+      "priority_std": 0.2089428371973262,
+      "converted_rate": 0.2706766917293233
+    }
+  ],
+  "segment_distribution_clean": [
+    {
+      "predicted_attitude": "positive_engagement",
+      "n": 76,
+      "priority_mean": 0.739784073060864,
+      "priority_median": 0.8003889870422292,
+      "priority_std": 0.20462328388097378,
+      "converted_rate": 0.5131578947368421
+    },
+    {
+      "predicted_attitude": "objection",
+      "n": 22,
+      "priority_mean": 0.5798003940166967,
+      "priority_median": 0.5874178910335919,
+      "priority_std": 0.2427112751506037,
+      "converted_rate": 0.5454545454545454
+    },
+    {
+      "predicted_attitude": "neutral",
+      "n": 36,
+      "priority_mean": 0.33264274322554943,
+      "priority_median": 0.24298548656805052,
+      "priority_std": 0.18240521370887067,
+      "converted_rate": 0.3611111111111111
+    },
+    {
+      "predicted_attitude": "disengaged",
+      "n": 56,
+      "priority_mean": 0.16794722295067097,
+      "priority_median": 0.06585363681851641,
+      "priority_std": 0.1951491891374844,
+      "converted_rate": 0.30357142857142855
+    }
+  ],
+  "priority_summary_full": {
+    "mean": 0.496304879844568,
+    "median": 0.47592515163139243,
+    "std": 0.3142511413653808,
+    "min": 0.04203103682474311,
+    "max": 0.9968968335411191
+  },
+  "priority_summary_clean": {
+    "mean": 0.4755756919071071,
+    "median": 0.45958362850150764,
+    "std": 0.3188584293162209,
+    "min": 0.04203103682474311,
+    "max": 0.9924252028959261
+  },
+  "base_converted_rate_full": 0.40584415584415584,
+  "base_converted_rate_clean": 0.4263157894736842
+}

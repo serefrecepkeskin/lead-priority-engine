@@ -2,7 +2,7 @@
 
 A two-part system for ranking sales leads: a tabular model that predicts conversion, and a sentiment / intent classifier on interaction text. The two signals combine into a single priority score that a sales rep can act on.
 
-Status: phases 0 (synthetic sentiment training data + leakage diagnostics), 1 (EDA + shared feature pipeline), and 2 (LR baseline + LightGBM lead scoring model) are complete; sentiment classifier and the FastAPI service are next.
+Status: phases 0 (synthetic sentiment training data + leakage diagnostics), 1 (EDA + shared feature pipeline), 2 (LR baseline + LightGBM lead scoring model), 3 (OpenRouter LLM sentiment classifier), and 4 (combined priority score) are complete; the FastAPI service is next.
 
 ## Setup
 
@@ -51,7 +51,7 @@ the relevant doc for depth.
 | 1 | EDA + feature engineering | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
 | 2 | Lead scoring model (LR baseline + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
 | 3 | Sentiment / intent classifier (OpenRouter LLM zero/few-shot) | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
-| 4 | Combined priority score | _coming: `docs/4_priority_score.docx`_ | _(no notebook — small wiring step)_ |
+| 4 | Combined priority score (weighted average) | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
 
 **Doc format contract** (every numbered docx follows the same shape):
 
