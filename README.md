@@ -8,7 +8,7 @@ Status: phases 0 through 5 are complete — synthetic sentiment training data + 
 
 ## What is the project
 
-The runtime project is **`src/lead_priority/`** — that is the package that gets installed, containerized, and served. Everything else in the tree is supporting material: `notebooks/` and `docs/` explain how we got here, `scripts/datagen/` and the `scripts/build_*`, `scripts/train_*`, `scripts/fit_*` helpers produced the synthetic notes / fitted artifacts / docx write-ups once (offline, not run on each request), `data/` holds the inputs, and `artifacts/` holds the fitted models the runtime loads at boot.
+The runtime project is **`src/lead_priority/`** — that is the package that gets installed, containerized, and served. Everything else in the tree is supporting material: `notebooks/` and `docs/` explain how we got here, `scripts/train_*` and `scripts/fit_*` produced the fitted artifacts once (offline, not run on each request), `data/` holds the inputs, and `artifacts/` holds the fitted models the runtime loads at boot.
 
 ## Quick start
 
@@ -17,6 +17,17 @@ One-shot interactive installer (stdlib-only, no prerequisites beyond Python 3.12
     python3 deploy/setup.py
 
 It copies `.env` from the template, prompts for `OPEN_ROUTER_API_KEY` if missing, builds the Docker image (or a venv), and smoke-tests `/healthz` + `/score`. If something fails it points at [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) §9 for the manual recovery table.
+
+### Getting an OpenRouter API key (free — no credit card needed)
+
+The runtime uses the **`z-ai/glm-4.5-air:free`** model on OpenRouter, which is on the **free tier** — you do **not** need to add a payment method or top up any credit balance to run this project. The free tier has a daily request cap that is more than enough for evaluation.
+
+1. Go to **<https://openrouter.ai/>** and sign up (Google / GitHub / email — all free).
+2. Open the keys page: **<https://openrouter.ai/keys>**.
+3. Click **Create Key**, give it any name (e.g. `lead-priority-engine`), and copy the value (starts with `sk-or-...`).
+4. Paste it into `.env` next to `OPEN_ROUTER_API_KEY=` (or let `python3 deploy/setup.py` prompt you for it).
+
+That's it — no billing setup, no credits. If the daily quota is exhausted, `/score` automatically falls back to neutral sentiment so the service stays usable; you can simply retry the next day.
 
 ## Setup
 
@@ -71,7 +82,7 @@ Runtime config lives in `.env` (gitignored) and is loaded by `src/lead_priority/
 
 The repo references two LLM providers. They serve completely different roles and a reviewer running the service needs to know which one is actually required:
 
-- **OpenRouter (`OPEN_ROUTER_API_KEY`)** — the **only LLM used at serving time**. Powers Phase 3 sentiment classification through the `/score` endpoint. If unset, `/score` falls back to neutral sentiment so the service stays usable; `/readyz` surfaces the missing key as 503.
+- **OpenRouter (`OPEN_ROUTER_API_KEY`)** — the **only LLM used at serving time**. Powers Phase 3 sentiment classification through the `/score` endpoint. The configured model `z-ai/glm-4.5-air:free` is on OpenRouter's **free tier** — no billing setup needed. See the [Getting an OpenRouter API key](#getting-an-openrouter-api-key-free--no-credit-card-needed) section above for how to obtain one. If unset, `/score` falls back to neutral sentiment so the service stays usable; `/readyz` surfaces the missing key as 503.
 - **Azure OpenAI (`AZURE_OPENAI_*`)** — used **only for offline data generation** (Phase 0 synthetic interaction notes, produced by `scripts/datagen/` and `scripts/generate_interactions.py`). The runtime package never imports it. The generated notes are already committed under `data/synthetic/`, so a reviewer running the service does **not** need an Azure key.
 
 ## Documentation
@@ -236,8 +247,7 @@ lead-priority-engine/
 ├── scripts/
 │   ├── datagen/                offline Phase-0 synthetic-data tooling (NOT runtime)
 │   ├── generate_interactions.py / evaluate_openrouter_sentiment.py
-│   ├── fit_feature_pipeline.py / train_lead_scoring.py    (offline training)
-│   └── build_*_docx.py / build_3_sentiment_notebook.py    (docx + notebook builders)
+│   └── fit_feature_pipeline.py / train_lead_scoring.py    (offline training)
 ├── deploy/
 │   └── setup.py                one-shot interactive installer (stdlib-only)
 ├── logs/                       rotating JSON service logs (gitignored)

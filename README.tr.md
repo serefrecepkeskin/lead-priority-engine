@@ -8,7 +8,7 @@ Durum: 0'dan 5'e kadar olan tüm fazlar tamamlanmıştır — sentetik duygu eğ
 
 ## Proje nedir
 
-Çalışma anında devreye giren proje **`src/lead_priority/`** paketidir — kurulan, konteynerlenen ve servis edilen kısım budur. Ağaçtaki diğer her şey destekleyici materyaldir: `notebooks/` ve `docs/` bu noktaya nasıl gelindiğini anlatır, `scripts/datagen/` ile `scripts/build_*`, `scripts/train_*`, `scripts/fit_*` yardımcı betikleri sentetik notları, eğitilmiş artefaktları ve docx yazımlarını bir kez (çevrimdışı, her istek için tekrar değil) üretmiştir, `data/` girdileri tutar, `artifacts/` ise çalışma anında yüklenen eğitilmiş modelleri içerir.
+Çalışma anında devreye giren proje **`src/lead_priority/`** paketidir — kurulan, konteynerlenen ve servis edilen kısım budur. Ağaçtaki diğer her şey destekleyici materyaldir: `notebooks/` ve `docs/` bu noktaya nasıl gelindiğini anlatır, `scripts/train_*` ve `scripts/fit_*` yardımcı betikleri eğitilmiş artefaktları bir kez (çevrimdışı, her istek için tekrar değil) üretmiştir, `data/` girdileri tutar, `artifacts/` ise çalışma anında yüklenen eğitilmiş modelleri içerir.
 
 ## Hızlı başlangıç
 
@@ -17,6 +17,17 @@ Tek komutla etkileşimli kurulum (yalnızca standart kütüphane kullanılır, P
     python3 deploy/setup.py
 
 Şablondan `.env` kopyalanır, eksikse `OPEN_ROUTER_API_KEY` istenir, Docker imajı (veya venv) inşa edilir ve `/healthz` + `/score` üzerinde sigara testi (smoke test) çalıştırılır. Herhangi bir adım hata verirse [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) §9'daki manuel kurtarma tablosuna yönlendirilir.
+
+### OpenRouter API anahtarını alma (ücretsiz — kredi kartı gerekmez)
+
+Çalışma zamanı **`z-ai/glm-4.5-air:free`** modelini OpenRouter üzerinden kullanır; bu model **ücretsiz katmandadır** (free tier). Projeyi çalıştırmak için **herhangi bir ödeme yöntemi eklemek veya kredi bakiyesi yüklemek gerekmez**. Ücretsiz katmanın günlük istek limiti değerlendirme için fazlasıyla yeterlidir.
+
+1. **<https://openrouter.ai/>** adresine gidin ve kayıt olun (Google / GitHub / e-posta — hepsi ücretsiz).
+2. Anahtarlar sayfasını açın: **<https://openrouter.ai/keys>**.
+3. **Create Key** butonuna tıklayın, herhangi bir isim verin (örn. `lead-priority-engine`) ve değeri kopyalayın (`sk-or-...` ile başlar).
+4. `.env` dosyasında `OPEN_ROUTER_API_KEY=` satırına yapıştırın (veya `python3 deploy/setup.py` çalıştırırsanız o sizden ister).
+
+İşlem bu kadar — fatura ayarı, kredi yükleme yok. Günlük kota dolarsa `/score` otomatik olarak nötr sentiment'a düşer ve servis çalışmaya devam eder; ertesi gün tekrar deneyebilirsiniz.
 
 ## Kurulum
 
@@ -71,7 +82,7 @@ Yeniden eğitim notebooklarda ve çevrimdışı `scripts/train_*`, `scripts/fit_
 
 Repo iki LLM sağlayıcısına atıf yapar. İkisinin rolleri tamamen farklıdır ve servisi çalıştıracak bir incelemecinin hangisinin gerçekten gerekli olduğunu bilmesi gerekir:
 
-- **OpenRouter (`OPEN_ROUTER_API_KEY`)** — **çalışma anında kullanılan tek LLM**. `/score` uç noktasındaki Faz 3 duygu sınıflandırmasını besler. Tanımlı değilse `/score` nötr duyguya geri düşer ve servis kullanılabilir kalır; `/readyz` eksik anahtarı 503 olarak yüzeye çıkarır.
+- **OpenRouter (`OPEN_ROUTER_API_KEY`)** — **çalışma anında kullanılan tek LLM**. `/score` uç noktasındaki Faz 3 duygu sınıflandırmasını besler. Yapılandırılmış `z-ai/glm-4.5-air:free` modeli OpenRouter'ın **ücretsiz katmanındadır** — fatura ayarı gerekmez. Anahtarı nasıl alacağınız için yukarıdaki [OpenRouter API anahtarını alma](#openrouter-api-anahtarını-alma-ücretsiz--kredi-kartı-gerekmez) bölümüne bakın. Tanımlı değilse `/score` nötr duyguya geri düşer ve servis kullanılabilir kalır; `/readyz` eksik anahtarı 503 olarak yüzeye çıkarır.
 - **Azure OpenAI (`AZURE_OPENAI_*`)** — **yalnızca çevrimdışı veri üretimi için** kullanılır (Faz 0 sentetik etkileşim notları, `scripts/datagen/` ve `scripts/generate_interactions.py` tarafından üretilir). Çalışma zamanı paketi bunu hiç içe aktarmaz. Üretilen notlar zaten `data/synthetic/` altında işlenmiş durumda olduğundan, servisi çalıştıracak bir incelemecinin Azure anahtarına **ihtiyacı yoktur**.
 
 ## Belgeler
@@ -233,8 +244,7 @@ lead-priority-engine/
 ├── scripts/
 │   ├── datagen/                çevrimdışı Faz-0 sentetik veri araçları (çalışma zamanı DEĞİL)
 │   ├── generate_interactions.py / evaluate_openrouter_sentiment.py
-│   ├── fit_feature_pipeline.py / train_lead_scoring.py    (çevrimdışı eğitim)
-│   └── build_*_docx.py / build_3_sentiment_notebook.py    (docx + notebook üreticileri)
+│   └── fit_feature_pipeline.py / train_lead_scoring.py    (çevrimdışı eğitim)
 ├── deploy/
 │   └── setup.py                tek komutluk etkileşimli kurulum (yalnızca standart kütüphane)
 ├── logs/                       rotating JSON servis logları (gitignore'da)
