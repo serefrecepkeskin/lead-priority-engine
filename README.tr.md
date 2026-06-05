@@ -36,6 +36,10 @@ Python 3.12 gereklidir.
     make pre-commit  # tüm kancaları tüm ağaç üzerinde çalıştır
     make run         # FastAPI dev sunucusu
 
+## CI
+
+GitHub Actions her push ve pull request'te ruff + mypy + pytest çalıştırır. İş akışı `.github/workflows/` altındadır; canlı çalıştırmalar [github.com/SerefRecepKeskin/lead-priority-engine/actions](https://github.com/SerefRecepKeskin/lead-priority-engine/actions) adresinden görülebilir — kodu çekmeden önce mevcut commit üzerinde pipeline'ın yeşil olduğunu doğrulamanın en kolay yoludur.
+
 ## Yerleşim
 
     src/lead_priority/    çalışma zamanı paketi (api, features, models, utils, settings)
