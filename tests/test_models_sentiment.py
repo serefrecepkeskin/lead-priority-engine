@@ -15,11 +15,10 @@ import httpx
 import pytest
 import respx
 
-import lead_priority.models.sentiment as sentiment_module
+import lead_priority.infra.openrouter.sentiment as sentiment_module
 import lead_priority.settings as settings_module
-from lead_priority.models import (
-    SENTIMENT_CLASSES,
-    SENTIMENT_SCORE_MAP,
+from lead_priority.core.scoring.sentiment_classes import SENTIMENT_CLASSES, SENTIMENT_SCORE_MAP
+from lead_priority.infra.openrouter.sentiment import (
     OpenRouterError,
     OpenRouterRateLimitError,
     OpenRouterSentiment,

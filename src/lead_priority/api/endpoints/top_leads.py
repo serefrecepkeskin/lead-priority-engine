@@ -20,13 +20,10 @@ from fastapi import APIRouter, Query, Request
 
 from lead_priority.api.deps import get_top_leads_cache, model_versions_payload
 from lead_priority.api.schemas import ModelVersions, TopLeadEntry, TopLeadsResponse
-from lead_priority.features import FeatureTransformer
-from lead_priority.models import (
-    SENTIMENT_SCORE_MAP,
-    LeadScoringModel,
-    SentimentClass,
-    batch_compute_priority,
-)
+from lead_priority.core.features import FeatureTransformer
+from lead_priority.core.inference.lead_scoring import LeadScoringModel
+from lead_priority.core.scoring.priority import batch_compute_priority
+from lead_priority.core.scoring.sentiment_classes import SENTIMENT_SCORE_MAP, SentimentClass
 
 logger = logging.getLogger("lead_priority.api.top_leads")
 

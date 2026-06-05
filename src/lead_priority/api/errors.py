@@ -1,10 +1,10 @@
 """Centralised exception handlers for the FastAPI service.
 
-The case study asks for ``/score`` to keep producing a useful priority even
-when the LLM is unavailable, so transient OpenRouter failures are absorbed
-inside the endpoint and ONLY non-transient errors propagate here. The handlers
-below cover the remaining classes: permanent upstream errors (502), config
-errors (500), and unexpected exceptions (500 with a redacted detail).
+``/score`` is designed to keep producing a useful priority even when the LLM
+is unavailable, so transient OpenRouter failures are absorbed inside the
+endpoint and ONLY non-transient errors propagate here. The handlers below
+cover the remaining classes: permanent upstream errors (502), config errors
+(500), and unexpected exceptions (500 with a redacted detail).
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from lead_priority.models import OpenRouterError, OpenRouterPermanentError
+from lead_priority.infra.openrouter.sentiment import OpenRouterError, OpenRouterPermanentError
 
 logger = logging.getLogger("lead_priority.api.errors")
 

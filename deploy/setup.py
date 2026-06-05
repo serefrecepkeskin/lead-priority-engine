@@ -11,8 +11,8 @@ a running ``http://localhost:8000`` API:
 
 Stdlib-only on purpose: the user has not yet installed our requirements at
 the time they run this script. If something fails, the script points at
-``docs/5_deployment.docx §8`` (failure-mode table) so the user can recover
-manually instead of debugging the installer.
+``docs/5_fastapi_serving_and_deployment.docx §8`` (failure-mode table) so the
+user can recover manually instead of debugging the installer.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ENV_PATH = REPO_ROOT / ".env"
 ENV_EXAMPLE_PATH = REPO_ROOT / ".env.example"
 EXAMPLE_PAYLOAD_PATH = REPO_ROOT / "examples" / "score_request.json"
-DEPLOYMENT_DOC = "docs/5_deployment.docx"
+DEPLOYMENT_DOC = "docs/5_fastapi_serving_and_deployment.docx"
 
 OPENROUTER_KEYS_URL = "https://openrouter.ai/keys"
 OPENROUTER_KEY_PREFIX = "sk-or-"

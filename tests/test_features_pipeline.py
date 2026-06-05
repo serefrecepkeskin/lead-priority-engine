@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from lead_priority.features import FeatureTransformer, build_pipeline, derive_features
-from lead_priority.features.constants import REQUIRED_RAW_COLUMNS
+from lead_priority.core.features import FeatureTransformer, build_pipeline, derive_features
+from lead_priority.core.features.constants import REQUIRED_RAW_COLUMNS
 from lead_priority.settings import REPO_ROOT
 
 RAW_CSV = REPO_ROOT / "data" / "Lead Scoring.csv"

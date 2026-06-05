@@ -1,4 +1,4 @@
-"""JSON log line shape + request-id middleware."""
+"""JSON log line shape + rotating-file handler installation."""
 
 from __future__ import annotations
 
@@ -7,8 +7,11 @@ import json
 import logging
 import sys
 import uuid
+from pathlib import Path
 
-from lead_priority.api.logging import JsonFormatter
+import pytest
+
+from lead_priority.utils.logging import JsonFormatter, configure_logging
 
 
 def test_json_formatter_emits_parseable_json() -> None:
@@ -69,3 +72,26 @@ def test_json_formatter_writes_to_stream_handler() -> None:
     payload = json.loads(line)
     assert payload["msg"] == "hello"
     assert payload["latency_ms"] == 12.3
+
+
+def test_configure_logging_writes_to_log_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """configure_logging installs a rotating file handler at settings.log_file.
+
+    Guards against silent regression where the dictConfig drops the file
+    handler — the user's "logs in the project directory" requirement.
+    """
+    log_path = tmp_path / "subdir" / "app.log"
+    monkeypatch.setenv("LOG_FILE", str(log_path))
+    configure_logging("INFO")
+    logger = logging.getLogger(f"lead_priority.test.{uuid.uuid4().hex}")
+    logger.info("file_handler_check", extra={"k": "v"})
+    for handler in logging.getLogger().handlers:
+        handler.flush()
+    assert log_path.exists()
+    written = log_path.read_text(encoding="utf-8").strip().splitlines()
+    assert written, "log file should contain at least one record"
+    payload = json.loads(written[-1])
+    assert payload["msg"] == "file_handler_check"
+    assert payload["k"] == "v"

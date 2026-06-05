@@ -2,10 +2,10 @@
 
 The lead payload is intentionally typed as ``dict[str, Any]`` because the
 feature pipeline already validates column presence inside ``derive_features``
-and the case study leaves the schema open ("ham CSV column → value sözlüğü").
-Pulling each of the 30+ raw columns into a Pydantic model would mostly add
-maintenance burden without catching real bugs — pipeline-level validation is
-the source of truth.
+and the project intentionally leaves the wire schema open ("raw CSV column →
+value dict"). Pulling each of the 30+ raw columns into a Pydantic model would
+mostly add maintenance burden without catching real bugs — pipeline-level
+validation is the source of truth.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from lead_priority.models import SENTIMENT_CLASSES, SentimentClass
+from lead_priority.core.scoring.sentiment_classes import SENTIMENT_CLASSES, SentimentClass
 
 
 class ScoreRequest(BaseModel):

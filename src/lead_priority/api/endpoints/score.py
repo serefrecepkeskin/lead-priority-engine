@@ -42,15 +42,17 @@ from lead_priority.api.schemas import (
     ScoreResponse,
     SentimentBlock,
 )
-from lead_priority.models import (
+from lead_priority.core.scoring.priority import compute_priority
+from lead_priority.core.scoring.sentiment_classes import (
     SENTIMENT_SCORE_MAP,
+    SentimentClass,
+)
+from lead_priority.infra.openrouter.sentiment import (
     OpenRouterError,
     OpenRouterMalformedError,
     OpenRouterPermanentError,
     OpenRouterRateLimitError,
     OpenRouterSentiment,
-    SentimentClass,
-    compute_priority,
 )
 from lead_priority.settings import get_settings
 

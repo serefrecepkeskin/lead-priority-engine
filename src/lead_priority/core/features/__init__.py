@@ -16,7 +16,7 @@ Public API:
 
 from __future__ import annotations
 
-from lead_priority.features.derive import derive_features
-from lead_priority.features.pipeline import FeatureTransformer, build_pipeline
+from lead_priority.core.features.derive import derive_features
+from lead_priority.core.features.pipeline import FeatureTransformer, build_pipeline
 
 __all__ = ["FeatureTransformer", "build_pipeline", "derive_features"]

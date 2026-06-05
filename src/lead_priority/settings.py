@@ -34,6 +34,13 @@ class Settings(BaseSettings):
     data_dir: Path = REPO_ROOT / "data"
     artifacts_dir: Path = REPO_ROOT / "artifacts"
 
+    # Rotating JSON log file. Pydantic-settings reads ``LOG_FILE`` from the
+    # env so tests can point this at a temp path. Override at runtime, not in
+    # code, so a single deploy can redirect logs to a mounted volume without
+    # a rebuild. The file handler is installed alongside stdout — Docker /
+    # k8s still capture the 12-factor stdout stream.
+    log_file: Path = REPO_ROOT / "logs" / "app.log"
+
     lead_scoring_model: str = "lead_scoring_lgbm.joblib"
     sentiment_model: str = "sentiment_model"
 
