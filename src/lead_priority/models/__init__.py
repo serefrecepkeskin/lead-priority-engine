@@ -13,6 +13,11 @@ from lead_priority.models.lead_scoring import (
     SCHEMA_VERSION,
     LeadScoringModel,
 )
+from lead_priority.models.priority import (
+    WEIGHT_SUM_TOLERANCE,
+    batch_compute_priority,
+    compute_priority,
+)
 from lead_priority.models.sentiment import (
     MODEL_ALIASES,
     SENTIMENT_CLASSES,
@@ -30,10 +35,13 @@ __all__ = [
     "SCHEMA_VERSION",
     "SENTIMENT_CLASSES",
     "SENTIMENT_SCORE_MAP",
+    "WEIGHT_SUM_TOLERANCE",
     "LeadScoringModel",
     "OpenRouterError",
     "OpenRouterPermanentError",
     "OpenRouterRateLimitError",
     "OpenRouterSentiment",
     "SentimentClass",
+    "batch_compute_priority",
+    "compute_priority",
 ]
