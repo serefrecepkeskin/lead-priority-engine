@@ -114,7 +114,7 @@ def configure_logging(level: str) -> None:
     )
 
 
-class RequestIdMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
+class RequestIdMiddleware(BaseHTTPMiddleware):  # type: ignore[misc, unused-ignore]
     """Attach a request id, measure latency, and log one record per request.
 
     The middleware reads ``X-Request-Id`` from the incoming request (a caller

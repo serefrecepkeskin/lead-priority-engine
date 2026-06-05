@@ -16,7 +16,7 @@ Tek komutla etkileşimli kurulum (yalnızca standart kütüphane kullanılır, P
 
     python3 scripts/setup.py
 
-Şablondan `.env` kopyalanır, eksikse `OPEN_ROUTER_API_KEY` istenir, Docker imajı (veya venv) inşa edilir ve `/healthz` + `/score` üzerinde sigara testi (smoke test) çalıştırılır. Herhangi bir adım hata verirse [`docs/6_deployment.docx`](docs/6_deployment.docx) §9'daki manuel kurtarma tablosuna yönlendirilir.
+Şablondan `.env` kopyalanır, eksikse `OPEN_ROUTER_API_KEY` istenir, Docker imajı (veya venv) inşa edilir ve `/healthz` + `/score` üzerinde sigara testi (smoke test) çalıştırılır. Herhangi bir adım hata verirse [`docs/5_deployment.docx`](docs/5_deployment.docx) §9'daki manuel kurtarma tablosuna yönlendirilir.
 
 ## Kurulum
 
@@ -85,7 +85,7 @@ Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `note
 | 2 | Lead skorlama modeli (LR taban + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
 | 3 | Duygu / niyet sınıflandırıcısı (OpenRouter LLM zero/few-shot) | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
 | 4 | Birleşik öncelik skoru (ağırlıklı ortalama) | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 6 | FastAPI servisi + Docker dağıtımı (servis tasarımı + kurulum rehberi) | [`docs/6_deployment.docx`](docs/6_deployment.docx) | — |
+| 5 | FastAPI servisi + Docker dağıtımı (servis tasarımı + kurulum rehberi) | [`docs/5_deployment.docx`](docs/5_deployment.docx) | — |
 
 **Belge format sözleşmesi** (numaralı her docx aynı biçimi izler):
 
@@ -103,7 +103,7 @@ Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `note
 
 ## Dağıtım (Deployment)
 
-Kurulum, servis tasarımı, hata-modu sorun giderme tablosu ve manuel kurtarma adımları için **[`docs/6_deployment.docx`](docs/6_deployment.docx)** dosyasına bakın. Tek komutluk `scripts/setup.py` mutlu yolu kapsar; docx ise geri kalan her şeyi kapsar (Docker ve venv modları, uç nokta tanımları, bir adım hata verdiğinde kurulum betiğinin atıf yaptığı kurtarma prosedürleri).
+Kurulum, servis tasarımı, hata-modu sorun giderme tablosu ve manuel kurtarma adımları için **[`docs/5_deployment.docx`](docs/5_deployment.docx)** dosyasına bakın. Tek komutluk `scripts/setup.py` mutlu yolu kapsar; docx ise geri kalan her şeyi kapsar (Docker ve venv modları, uç nokta tanımları, bir adım hata verdiğinde kurulum betiğinin atıf yaptığı kurtarma prosedürleri).
 
 ## Vaka çalışmasının servis yüzeyini kapsayan testler
 
@@ -153,7 +153,7 @@ lead-priority-engine/
 │   ├── Lead Scoring.csv        ham girdi
 │   ├── Leads Data Dictionary.xlsx
 │   └── synthetic/              repoya işlenmiş LLM-üretimi etkileşim notları (Faz 0)
-├── docs/                       numaralı faz yazımları (0–4, 6) — Belgeler tablosuna bakın
+├── docs/                       numaralı faz yazımları (0–5) — Belgeler tablosuna bakın
 ├── notebooks/                  belge numaralarıyla eşleşen EDA + deneyler
 ├── scripts/
 │   ├── setup.py                tek komutluk etkileşimli kurulum (yalnızca standart kütüphane)

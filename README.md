@@ -16,7 +16,7 @@ One-shot interactive installer (stdlib-only, no prerequisites beyond Python 3.12
 
     python3 scripts/setup.py
 
-It copies `.env` from the template, prompts for `OPEN_ROUTER_API_KEY` if missing, builds the Docker image (or a venv), and smoke-tests `/healthz` + `/score`. If something fails it points at [`docs/6_deployment.docx`](docs/6_deployment.docx) §9 for the manual recovery table.
+It copies `.env` from the template, prompts for `OPEN_ROUTER_API_KEY` if missing, builds the Docker image (or a venv), and smoke-tests `/healthz` + `/score`. If something fails it points at [`docs/5_deployment.docx`](docs/5_deployment.docx) §9 for the manual recovery table.
 
 ## Setup
 
@@ -88,7 +88,7 @@ the relevant doc for depth.
 | 2 | Lead scoring model (LR baseline + LGBM) | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
 | 3 | Sentiment / intent classifier (OpenRouter LLM zero/few-shot) | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
 | 4 | Combined priority score (weighted average) | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 6 | FastAPI servisi + Docker deployment (service design + setup guide) | [`docs/6_deployment.docx`](docs/6_deployment.docx) | — |
+| 5 | FastAPI service + Docker deployment (service design + setup guide) | [`docs/5_deployment.docx`](docs/5_deployment.docx) | — |
 
 **Doc format contract** (every numbered docx follows the same shape):
 
@@ -106,7 +106,7 @@ the relevant doc for depth.
 
 ## Deployment
 
-For setup, service design, the failure-mode troubleshooting table, and manual recovery steps, see **[`docs/6_deployment.docx`](docs/6_deployment.docx)**. The one-shot `scripts/setup.py` covers the happy path; the docx covers everything else (Docker vs venv modes, endpoint specs, recovery procedures referenced by the installer when a step fails).
+For setup, service design, the failure-mode troubleshooting table, and manual recovery steps, see **[`docs/5_deployment.docx`](docs/5_deployment.docx)**. The one-shot `scripts/setup.py` covers the happy path; the docx covers everything else (Docker vs venv modes, endpoint specs, recovery procedures referenced by the installer when a step fails).
 
 ## Tests covering the case-study serving surface
 
@@ -156,7 +156,7 @@ lead-priority-engine/
 │   ├── Lead Scoring.csv        raw input
 │   ├── Leads Data Dictionary.xlsx
 │   └── synthetic/              committed LLM-generated interaction notes (Phase 0)
-├── docs/                       numbered phase write-ups (0–4, 6) — see Documentation table
+├── docs/                       numbered phase write-ups (0–5) — see Documentation table
 ├── notebooks/                  EDA + experiments matching the doc numbers
 ├── scripts/
 │   ├── setup.py                one-shot interactive installer (stdlib-only)
