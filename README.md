@@ -36,6 +36,10 @@ Python 3.12 is required.
     make pre-commit  # run all hooks against the whole tree
     make run         # FastAPI dev server (once the API exists)
 
+## CI
+
+GitHub Actions runs ruff + mypy + pytest on every push and pull request. The workflow is at `.github/workflows/` and live runs are visible at [github.com/SerefRecepKeskin/lead-priority-engine/actions](https://github.com/SerefRecepKeskin/lead-priority-engine/actions) — the easiest place to confirm the pipeline is green on the current commit before pulling the code.
+
 ## Layout
 
     src/lead_priority/    runtime package (api, features, models, utils, settings)
