@@ -58,7 +58,7 @@ def create_app() -> FastAPI:
         version=_package_version(),
         description=(
             "Tabular lead scoring + interaction sentiment combined into a "
-            "single priority score. See docs/6_deployment.docx for setup, "
+            "single priority score. See docs/5_deployment.docx for setup, "
             "service design, and operational notes."
         ),
         lifespan=lifespan,
