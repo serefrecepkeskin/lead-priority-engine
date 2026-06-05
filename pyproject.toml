@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,8 +8,9 @@ version = "0.1.0"
 description = "Lead prioritization engine: tabular lead scoring + interaction sentiment + combined priority API"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-license = { text = "Proprietary" }
-authors = [{ name = "Seref Recep Keskin", email = "serefrecepkeskin@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Şeref Recep Keskin", email = "36041502+serefrecepkeskin@users.noreply.github.com" }]
 # Runtime dependencies are tracked in requirements.txt (see README).
 
 [tool.setuptools.packages.find]

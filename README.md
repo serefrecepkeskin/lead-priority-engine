@@ -257,3 +257,7 @@ lead-priority-engine/
 ├── .env.example                config template (loaded by src/lead_priority/settings.py)
 └── pyproject.toml
 ```
+
+## License
+
+[MIT](LICENSE) — free to use, modify, and distribute. Copyright (c) 2026 Şeref Recep Keskin.

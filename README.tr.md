@@ -254,3 +254,7 @@ lead-priority-engine/
 ├── .env.example                yapılandırma şablonu (src/lead_priority/settings.py yükler)
 └── pyproject.toml
 ```
+
+## Lisans
+
+[MIT](LICENSE) — kullanmakta, değiştirmekte, dağıtmakta özgürsünüz. Copyright (c) 2026 Şeref Recep Keskin.
