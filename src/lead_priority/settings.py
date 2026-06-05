@@ -37,6 +37,12 @@ class Settings(BaseSettings):
     lead_scoring_model: str = "lead_scoring_lgbm.joblib"
     sentiment_model: str = "sentiment_model"
 
+    # OpenRouter model id used by the Phase 5 FastAPI service. The default
+    # tracks the model evaluated in Phase 3 (artifacts/sentiment_predictions/
+    # glm-4-5-air_test.parquet) so /leads/top startup cache stays consistent
+    # with the cached predictions.
+    sentiment_model_name: str = "z-ai/glm-4.5-air:free"
+
     # Azure OpenAI. All optional at load time so the package imports cleanly
     # without a configured LLM; the caller is responsible for asserting the
     # required values before issuing a request.

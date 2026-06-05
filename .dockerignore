@@ -1,0 +1,64 @@
+# Build context exclusions. The Dockerfile copies a curated whitelist of
+# source + artefacts, so any negative match here is defence-in-depth in
+# case a future COPY widens its scope.
+
+.git/
+.github/
+.venv/
+.env
+.env.local
+.env.example
+.dockerignore.local
+
+# Python build / cache caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Notebooks, docs, and tests are deliverables / dev-time tooling only.
+notebooks/
+docs/
+tests/
+examples/
+
+# Offline data-gen + docx + notebook builders ship in scripts/ but
+# never run inside the container.
+scripts/datagen/
+scripts/build_*_docx.py
+scripts/build_*_notebook.py
+scripts/setup.py
+
+# Tracked artefacts that are NOT loaded by the FastAPI service.
+artifacts/figures/
+artifacts/lead_scoring_lr.joblib
+artifacts/sentiment_predictions/*.csv
+artifacts/leakage_report.json
+artifacts/feature_summary.json
+
+# Generated / interim data — only data/Lead Scoring.csv is shipped.
+data/processed/
+data/interim/
+data/synthetic/
+data/Senior_AI_Engineer_Case_Study.docx
+
+# Case-study deliverable file at repo root.
+Senior_AI_Engineer_Case_Study.docx
+
+# Logs + OS junk
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor caches
+.vscode/
+.idea/
+
+# Notes / handoff drafts (never tracked anyway, but harmless to repeat)
+notes/

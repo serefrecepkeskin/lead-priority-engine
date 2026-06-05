@@ -202,6 +202,16 @@ class OpenRouterPermanentError(OpenRouterError):
     """
 
 
+class OpenRouterMalformedError(OpenRouterError):
+    """Raised when the model returned an unparseable or out-of-schema response.
+
+    Separated from generic transport failures so the FastAPI service can
+    surface it as a 502 (upstream-bug) rather than silently degrading to
+    a neutral fallback — a model returning gibberish is a real signal that
+    operators should see, not absorb.
+    """
+
+
 @dataclass
 class OpenRouterSentiment:
     """Predict-only sentiment / intent classifier backed by an OpenRouter model.
@@ -403,11 +413,11 @@ class OpenRouterSentiment:
         if normalised is None:
             normalised = _extract_attitude_label(raw)
         if normalised is None:
-            raise OpenRouterError(
+            raise OpenRouterMalformedError(
                 f"OpenRouter response has no parseable 'attitude' field: {raw[:200]!r}"
             )
         if normalised not in get_args(SentimentClass):
-            raise OpenRouterError(
+            raise OpenRouterMalformedError(
                 f"OpenRouter returned unknown attitude label {normalised!r}; "
                 f"allowed: {SENTIMENT_CLASSES}"
             )
@@ -431,6 +441,7 @@ __all__ = [
     "SENTIMENT_CLASSES",
     "SENTIMENT_SCORE_MAP",
     "OpenRouterError",
+    "OpenRouterMalformedError",
     "OpenRouterPermanentError",
     "OpenRouterRateLimitError",
     "OpenRouterSentiment",

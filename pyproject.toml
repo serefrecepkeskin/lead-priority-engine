@@ -108,6 +108,7 @@ disallow_incomplete_defs = false
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers --strict-config"
+asyncio_mode = "auto"
 markers = [
     "unit: fast isolated unit tests",
     "integration: tests touching real I/O or trained models",
