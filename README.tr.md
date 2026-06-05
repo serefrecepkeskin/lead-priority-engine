@@ -78,14 +78,41 @@ Repo iki LLM sağlayıcısına atıf yapar. İkisinin rolleri tamamen farklıdı
 
 Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `notebooks/` altındadır. Dosyalar numaralandırılmıştır, böylece kronolojik sıra bir bakışta görülür. README kasıtlı olarak kısa tutulmuştur — derinlik için ilgili belgeye tıklayın.
 
-| # | Faz | Kapsam | Yazım | Notebook |
-|---|---|---|---|---|
-| 0 | Sentetik veri + sızıntı tanılaması | Sentetik etkileşim notları (TR / EN / Mix code-switching), etiketleme stratejisi, sentetik ↔ ham join üzerinde train→serve sızıntı tanılaması | [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) | [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb) |
-| 1 | EDA + özellik mühendisliği | Dönüşüm oranı dağılımı, sınıf dengesizliği, eksik veri paterni, kaynak bazında dönüşüm farkları; türetilen özellikler (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) her birinin gerekçesiyle | [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) | [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb) |
-| 2 | Lead skorlama modeli | LR taban (yorumlanabilirlik) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-%20 gain & lift chart; bootstrap-CI paired test; SHAP feature önemi | [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) | [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb) |
-| 3 | Duygu / niyet sınıflandırıcısı | Dört attitude (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter açık kaynak LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternatifi tartışıldı); TR + EN + Mix dil desteği; sınıf-bazlı + dil-bazlı confusion matrix + macro-F1 + bootstrap CI; fairness ve etik analizi | [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) | [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb) |
-| 4 | Birleşik öncelik skoru | `P(conversion)` + sentiment ordinal ağırlıklı ortalama; ağırlık gerekçesi, sensitivity sweep, meta-model alternatifi bilinçli olarak elendi | [`docs/4_priority_score.docx`](docs/4_priority_score.docx) | [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb) |
-| 5 | FastAPI servisi + Docker dağıtımı | `POST /score` + `GET /leads/top` endpoint sözleşmeleri, yapılandırılmış JSON logging + request-ID middleware, çok aşamalı Dockerfile, integration testleri, manuel kurtarma tablosu; üretim notları — feature drift takibi, retrain sıklığı, satış temsilcisi geri bildirim döngüsü, false-positive maliyet çerçevesi, 3-gün bütçesi sonraki adımlar | [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) | — |
+### Faz 0 — Sentetik veri + sızıntı tanılaması
+
+Sentetik etkileşim notları (TR / EN / Mix code-switching), etiketleme stratejisi, sentetik ↔ ham join üzerinde train→serve sızıntı tanılaması.
+
+📄 [`docs/0_synthetic_data_and_leakage.docx`](docs/0_synthetic_data_and_leakage.docx) · 📓 [`notebooks/0_leakage_analysis.ipynb`](notebooks/0_leakage_analysis.ipynb)
+
+### Faz 1 — EDA + özellik mühendisliği
+
+Dönüşüm oranı dağılımı, sınıf dengesizliği, eksik veri paterni, kaynak bazında dönüşüm farkları; türetilen özellikler (`channel_diversity_count`, `total_time_per_visit`, `days_since_last_activity`, …) her birinin gerekçesiyle.
+
+📄 [`docs/1_eda_and_feature_engineering.docx`](docs/1_eda_and_feature_engineering.docx) · 📓 [`notebooks/1_eda_and_feature_engineering.ipynb`](notebooks/1_eda_and_feature_engineering.ipynb)
+
+### Faz 2 — Lead skorlama modeli
+
+LR taban (yorumlanabilirlik) vs LightGBM (modern, hyperparameter-tuned); ROC / PR / accuracy + calibration plot + threshold sweep + top-%20 gain & lift chart; bootstrap-CI paired test; SHAP feature önemi.
+
+📄 [`docs/2_lead_scoring.docx`](docs/2_lead_scoring.docx) · 📓 [`notebooks/2_lead_scoring.ipynb`](notebooks/2_lead_scoring.ipynb)
+
+### Faz 3 — Duygu / niyet sınıflandırıcısı
+
+Dört attitude (`positive_engagement` / `objection` / `neutral` / `disengaged`); OpenRouter açık kaynak LLM, zero/few-shot prompt (XLM-R / DistilBERT fine-tune alternatifi tartışıldı); TR + EN + Mix dil desteği; sınıf-bazlı + dil-bazlı confusion matrix + macro-F1 + bootstrap CI; fairness ve etik analizi.
+
+📄 [`docs/3_sentiment_classifier.docx`](docs/3_sentiment_classifier.docx) · 📓 [`notebooks/3_sentiment_classifier.ipynb`](notebooks/3_sentiment_classifier.ipynb)
+
+### Faz 4 — Birleşik öncelik skoru
+
+`P(conversion)` + sentiment ordinal ağırlıklı ortalama; ağırlık gerekçesi, sensitivity sweep, meta-model alternatifi bilinçli olarak elendi.
+
+📄 [`docs/4_priority_score.docx`](docs/4_priority_score.docx) · 📓 [`notebooks/4_priority_demo.ipynb`](notebooks/4_priority_demo.ipynb)
+
+### Faz 5 — FastAPI servisi + Docker dağıtımı
+
+`POST /score` + `GET /leads/top` endpoint sözleşmeleri, yapılandırılmış JSON logging + request-ID middleware, çok aşamalı Dockerfile, integration testleri, manuel kurtarma tablosu; üretim notları — feature drift takibi, retrain sıklığı, satış temsilcisi geri bildirim döngüsü, false-positive maliyet çerçevesi, 3-gün bütçesi sonraki adımlar.
+
+📄 [`docs/5_fastapi_serving_and_deployment.docx`](docs/5_fastapi_serving_and_deployment.docx) · (notebook yok)
 
 **Belge format sözleşmesi** (numaralı her docx aynı biçimi izler):
 
@@ -102,6 +129,8 @@ Her fazın kendi yazımı `docs/` altında, varsa keşifsel notebook'u ise `note
 - İlk markdown hücresi faz docx'ine (`docs/N_*.docx`) geri bağlantı verir
 
 ## API örnekleri
+
+> İnteraktif Swagger UI: **http://127.0.0.1:8000/docs** — `POST /score` üzerindeki “Try it out” butonu tam dolu bir örnek payload ile önceden doldurulmuştur; JSON elle yazmadan gerçek bir istek atabilirsiniz. Redoc da `/redoc` adresinde mevcut.
 
 `POST /score` — tek bir lead için birleşik priority skoru. İstek yükü `examples/score_request.json`:
 
